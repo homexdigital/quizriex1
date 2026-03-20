@@ -3,841 +3,411 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DPI — Diagnóstico Personalizado de Investimento</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>Quiz RIEX — Qual seu nível para investir em imóveis?</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C97A;
-    --gold-pale: #F5E9C8;
-    --dark: #0D0D0F;
-    --dark-2: #141418;
-    --dark-3: #1C1C22;
-    --dark-4: #252530;
-    --text: #F0EDE8;
-    --text-muted: #9A9088;
-    --border: rgba(201,168,76,0.18);
-  }
+:root {
+  --cyan: #00C8F0;
+  --cyan-dim: rgba(0,200,240,0.12);
+  --cyan-border: rgba(0,200,240,0.22);
+  --blue: #0066CC;
+  --dark: #080E18;
+  --dark-2: #0D1420;
+  --dark-3: #111E2E;
+  --dark-4: #182338;
+  --text: #EEF4FA;
+  --muted: #6B8BAD;
+  --green: #00E096;
+}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--dark);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 40px 16px 80px;
-  }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px 80px;
+  background-image:
+    radial-gradient(ellipse at 85% 0%, rgba(0,102,204,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(0,200,240,0.07) 0%, transparent 45%);
+}
 
-  .container {
-    width: 100%;
-    max-width: 720px;
-  }
+.wrap { width: 100%; max-width: 680px; }
+.screen { display: none; }
+.screen.active { display: block; }
 
-  /* SCREENS */
-  .screen { display: none; }
-  .screen.active { display: block; }
+/* HEADER */
+.hdr { text-align: center; margin-bottom: 36px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cyan); border: 1px solid var(--cyan-border);
+  padding: 6px 16px; border-radius: 2px; margin-bottom: 28px;
+}
+.dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; }
+h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(28px, 6vw, 50px);
+  font-weight: 800; line-height: 1.06;
+  text-transform: uppercase; letter-spacing: -0.5px;
+  color: var(--text); margin-bottom: 16px;
+}
+h1 em { color: var(--cyan); font-style: normal; }
+.sub { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 28px; }
+.badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+.bdg { font-size: 12px; color: var(--cyan); background: var(--cyan-dim); border: 1px solid var(--cyan-border); border-radius: 2px; padding: 5px 12px; }
 
-  /* LOGO / HEADER */
-  .logo-area {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-  .logo-tag {
-    display: inline-block;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid var(--border);
-    padding: 6px 18px;
-    border-radius: 2px;
-    margin-bottom: 24px;
-  }
-  .logo-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 6vw, 52px);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-  .logo-sub {
-    font-size: 13px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  .gold-line {
-    width: 48px;
-    height: 1px;
-    background: var(--gold);
-    margin: 20px auto 0;
-  }
+/* CARD */
+.card {
+  background: var(--dark-2); border: 1px solid var(--cyan-border);
+  border-radius: 6px; padding: 40px; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 100%);
+}
+@media(max-width:520px) { .card { padding: 24px 18px; } }
 
-  /* CARD */
-  .card {
-    background: var(--dark-2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 40px;
-    margin-bottom: 24px;
-  }
-  @media(max-width:520px) { .card { padding: 24px 20px; } }
+/* FORM */
+.frow { margin-bottom: 18px; }
+.flabel { display: block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.finput {
+  width: 100%; background: var(--dark-3); border: 1px solid rgba(0,200,240,0.14);
+  border-radius: 4px; padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.finput:focus { border-color: var(--cyan); }
+.finput::placeholder { color: var(--muted); opacity: 0.5; }
+.ferr { font-size: 12px; color: #F05050; margin-top: 5px; display: none; }
 
-  /* INTRO */
-  .intro-headline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 4vw, 30px);
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 16px;
-    line-height: 1.3;
-  }
-  .intro-text {
-    font-size: 15px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 32px;
-  }
-  .intro-text strong { color: var(--gold); font-weight: 500; }
+/* BUTTONS */
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%);
+  color: #fff; font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  border: none; border-radius: 4px; padding: 17px 32px; cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: scale(0.99); }
+.btn-ghost {
+  background: transparent; color: var(--muted);
+  border: 1px solid rgba(0,200,240,0.14);
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  font-weight: 400; letter-spacing: 0; text-transform: none; padding: 12px;
+}
+.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); opacity: 1; }
+.btn-cta {
+  font-size: 20px; padding: 20px 32px;
+  background: linear-gradient(135deg, #00E096 0%, #00C8F0 50%, #0066CC 100%);
+  box-shadow: 0 0 32px rgba(0,200,240,0.2);
+}
 
-  .areas-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 36px;
-  }
-  @media(max-width:460px) { .areas-grid { grid-template-columns: 1fr; } }
-  .area-pill {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-  .area-pill .num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-    min-width: 20px;
-  }
+/* PROGRESS */
+.prog-wrap { margin-bottom: 28px; }
+.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.prog-lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+.prog-num { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--cyan); }
+.prog-bg { height: 3px; background: var(--dark-4); border-radius: 3px; }
+.prog-fill { height: 3px; background: linear-gradient(90deg, var(--cyan), var(--blue)); border-radius: 3px; transition: width 0.4s ease; }
 
-  /* FORM */
-  .form-group { margin-bottom: 20px; }
-  .form-label {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-  .form-input {
-    width: 100%;
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 13px 16px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus { border-color: var(--gold); }
-  .form-input::placeholder { color: var(--text-muted); opacity: 0.6; }
+/* QUESTION */
+.qlabel { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; display: block; }
+.qtext { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(20px, 4vw, 30px); font-weight: 700; text-transform: uppercase; line-height: 1.15; color: var(--text); margin-bottom: 8px; }
+.qsub { font-size: 13px; color: var(--muted); margin-bottom: 28px; font-style: italic; }
 
-  /* BUTTON */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: var(--gold);
-    color: var(--dark);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 3px;
-    padding: 15px 32px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    width: 100%;
-  }
-  .btn:hover { background: var(--gold-light); }
-  .btn:active { transform: scale(0.99); }
-  .btn-outline {
-    background: transparent;
-    color: var(--gold);
-    border: 1px solid var(--border);
-  }
-  .btn-outline:hover { background: rgba(201,168,76,0.08); }
-  .btn-cta {
-    background: linear-gradient(135deg, var(--gold) 0%, #A67C2A 100%);
-    font-size: 15px;
-    padding: 18px 32px;
-    letter-spacing: 1.5px;
-  }
+/* OPTIONS */
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--dark-3); border: 1px solid rgba(0,200,240,0.1);
+  border-radius: 4px; padding: 14px 18px; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s; user-select: none;
+}
+.opt:hover { border-color: rgba(0,200,240,0.32); background: rgba(0,200,240,0.05); }
+.opt.sel { border-color: var(--cyan); background: rgba(0,200,240,0.09); }
+.oradio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(0,200,240,0.28); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
+.opt.sel .oradio { border-color: var(--cyan); }
+.odik { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); display: none; }
+.opt.sel .odik { display: block; }
+.otxt { font-size: 15px; color: var(--text); font-weight: 300; line-height: 1.3; }
+.opt.sel .otxt { font-weight: 400; }
 
-  /* PROGRESS */
-  .progress-wrap {
-    margin-bottom: 32px;
-  }
-  .progress-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .progress-area {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .progress-count {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-  .progress-bar-bg {
-    height: 2px;
-    background: var(--dark-4);
-    border-radius: 2px;
-  }
-  .progress-bar-fill {
-    height: 2px;
-    background: var(--gold);
-    border-radius: 2px;
-    transition: width 0.4s ease;
-  }
+/* NAV */
+.nav { display: flex; gap: 10px; margin-top: 24px; }
+.nav .btn { flex: 1; }
+.err-sel { font-size: 12px; color: #F05050; margin-top: 8px; text-align: center; display: none; }
 
-  /* QUESTION */
-  .question-block {
-    margin-bottom: 32px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-  }
-  .question-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+/* RESULT */
+.res-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; margin-bottom: 16px; }
+.ptitle { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(30px, 7vw, 54px); font-weight: 800; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
+.dlabel { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.pdiag { font-size: 15px; color: var(--text); line-height: 1.65; margin-bottom: 24px; }
 
-  .q-num {
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    display: block;
-  }
-  .q-text {
-    font-size: 16px;
-    color: var(--text);
-    line-height: 1.5;
-    margin-bottom: 20px;
-    font-weight: 300;
-  }
+.brk-box { background: rgba(0,200,240,0.06); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); border-radius: 4px; padding: 18px 20px; margin-bottom: 12px; }
+.brk-lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
+.brk-box p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.brk-box strong { color: var(--text); font-weight: 500; }
 
-  /* SLIDER */
-  .slider-wrap {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .slider-label { font-size: 11px; color: var(--text-muted); min-width: 28px; text-align: center; letter-spacing: 1px; }
+.dir-box { background: var(--dark-3); border: 1px solid rgba(0,200,240,0.1); border-left: 3px solid var(--blue); border-radius: 4px; padding: 18px 20px; margin-bottom: 28px; }
+.dir-lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.dir-box p { font-size: 14px; color: var(--text); line-height: 1.65; }
+.dir-box strong { color: var(--cyan); }
 
-  input[type=range] {
-    flex: 1;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 3px;
-    background: var(--dark-4);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--gold);
-    border: 2px solid var(--dark);
-    box-shadow: 0 0 0 1px var(--gold);
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-  input[type=range]::-moz-range-thumb {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--gold); border: 2px solid var(--dark); cursor: pointer;
-  }
-  .slider-val {
-    min-width: 36px;
-    text-align: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold);
-  }
+/* OFFER */
+.offer {
+  background: var(--dark-2); border: 1px solid rgba(0,200,240,0.28);
+  border-radius: 6px; padding: 40px; text-align: center;
+  margin-top: 28px; position: relative; overflow: hidden;
+}
+.offer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #00E096, var(--cyan), var(--blue)); }
+@media(max-width:520px) { .offer { padding: 28px 18px; } }
+.offer-eye { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+.offer-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(22px, 5vw, 38px); font-weight: 800; text-transform: uppercase; color: var(--text); line-height: 1.1; margin-bottom: 28px; }
+.offer-title em { color: var(--cyan); font-style: normal; }
 
-  .slider-hints {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    padding: 0 48px;
-  }
-  .slider-hint { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+.kit { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; text-align: left; }
+.ki { display: flex; align-items: flex-start; gap: 12px; background: var(--dark-3); border: 1px solid rgba(0,200,240,0.08); border-radius: 4px; padding: 12px 16px; }
+.kchk { width: 20px; height: 20px; background: rgba(0,224,150,0.14); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.kchk svg { width: 10px; height: 10px; }
+.ktxt { font-size: 14px; color: var(--text); line-height: 1.4; }
+.ktxt span { color: var(--muted); font-size: 12px; }
 
-  /* NAV BUTTONS */
-  .nav-btns {
-    display: flex;
-    gap: 12px;
-    margin-top: 32px;
-  }
-  .nav-btns .btn { flex: 1; }
+.price-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+.price-old { font-size: 15px; color: var(--muted); text-decoration: line-through; }
+.price-new { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 800; color: var(--green); line-height: 1; }
+.price-tag { font-size: 12px; background: rgba(0,224,150,0.12); color: var(--green); border: 1px solid rgba(0,224,150,0.25); border-radius: 2px; padding: 4px 10px; }
+.guar { margin-top: 14px; font-size: 12px; color: var(--muted); }
 
-  /* RESULTS */
-  .result-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .result-score-big {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 80px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .result-score-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .result-profile {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 4vw, 32px);
-    font-weight: 600;
-    color: var(--text);
-    margin: 16px 0 8px;
-  }
-  .result-profile-desc {
-    font-size: 14px;
-    color: var(--text-muted);
-    max-width: 480px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
-  .chart-wrap {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto 40px;
-  }
-
-  .scores-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-  @media(max-width:480px) { .scores-grid { grid-template-columns: 1fr; } }
-
-  .score-card {
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .score-circle {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 2px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold);
-    flex-shrink: 0;
-  }
-  .score-card-info { flex: 1; min-width: 0; }
-  .score-card-name { font-size: 12px; color: var(--text-muted); line-height: 1.3; }
-  .score-bar-bg { height: 3px; background: var(--dark-4); border-radius: 2px; margin-top: 6px; }
-  .score-bar-fill { height: 3px; background: var(--gold); border-radius: 2px; }
-
-  /* PRIORITY BOX */
-  .priority-box {
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--gold);
-    border-radius: 3px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-  }
-  .priority-box h4 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .priority-box p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-
-  /* CTA BOX */
-  .cta-box {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,168,76,0.35);
-    border-radius: 4px;
-    padding: 36px;
-    text-align: center;
-    margin-top: 32px;
-  }
-  .cta-box .cta-eyebrow {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .cta-box h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 4vw, 30px);
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 12px;
-    line-height: 1.3;
-  }
-  .cta-box p {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 28px;
-    max-width: 460px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .cta-guarantee {
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-  }
-
-  /* SECTION DIVIDER */
-  .section-divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 24px;
-  }
-  .section-divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
-  .section-divider span { font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; white-space: nowrap; }
-
-  /* ERROR */
-  .error-msg { font-size: 12px; color: #E24B4A; margin-top: 6px; display: none; }
-
-  /* FOOTER NOTE */
-  .footer-note { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 40px; opacity: 0.5; }
+.ftr { text-align: center; margin-top: 40px; font-size: 11px; color: var(--muted); opacity: 0.35; letter-spacing: 1px; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
-  <!-- SCREEN 1: INTRO + LEAD CAPTURE -->
-  <div class="screen active" id="screen-intro">
-    <div class="logo-area">
-      <div class="logo-tag">RIEX · Diagnóstico</div>
-      <h1 class="logo-title">Descubra seu nível<br>como investidor</h1>
-      <p class="logo-sub">DPI — Diagnóstico Personalizado de Investimento</p>
-      <div class="gold-line"></div>
+<!-- INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="hdr">
+    <div class="tag"><span class="dot"></span>RIEX BRAZIL<span class="dot"></span></div>
+    <h1>Qual o seu nível para investir em imóveis<br><em>que se pagam sozinhos</em> usando OPM?</h1>
+    <p class="sub">Descubra em 2 minutos se você está pronto para gerar renda com imóveis — mesmo começando do zero.</p>
+    <div class="badges">
+      <span class="bdg">7 perguntas</span>
+      <span class="bdg">2 minutos</span>
+      <span class="bdg">Resultado personalizado</span>
     </div>
-
-    <div class="card">
-      <p class="intro-headline">Onde você realmente está no mercado imobiliário?</p>
-      <p class="intro-text">
-        Este diagnóstico avalia <strong>7 áreas fundamentais</strong> do investimento imobiliário. Em menos de 10 minutos, você descobre seus pontos fortes, seus gaps e o que fazer para avançar com consistência.
-      </p>
-      <div class="areas-grid">
-        <div class="area-pill"><span class="num">01</span>Potencial de Investimento</div>
-        <div class="area-pill"><span class="num">02</span>Estudo de Mercado</div>
-        <div class="area-pill"><span class="num">03</span>Oportunidades</div>
-        <div class="area-pill"><span class="num">04</span>Viabilidade</div>
-        <div class="area-pill"><span class="num">05</span>Administração de Imóveis</div>
-        <div class="area-pill"><span class="num">06</span>Mentalidade de Investidor</div>
-        <div class="area-pill"><span class="num">07</span>Domínio das Variáveis</div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="input-nome">Seu nome</label>
-        <input class="form-input" type="text" id="input-nome" placeholder="Como posso te chamar?">
-        <span class="error-msg" id="err-nome">Por favor, informe seu nome.</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="input-email">Seu e-mail</label>
-        <input class="form-input" type="email" id="input-email" placeholder="seu@email.com">
-        <span class="error-msg" id="err-email">Por favor, informe um e-mail válido.</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="input-tel">WhatsApp (opcional)</label>
-        <input class="form-input" type="tel" id="input-tel" placeholder="(11) 99999-9999">
-      </div>
-
-      <button class="btn" onclick="startQuiz()">Iniciar Diagnóstico →</button>
-      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:14px;line-height:1.5;">Seus dados são 100% seguros. Não enviamos spam.</p>
-    </div>
-    <p class="footer-note">RIEX · Inteligência em Investimento Imobiliário</p>
   </div>
-
-  <!-- SCREEN 2: QUIZ (rendered dynamically) -->
-  <div class="screen" id="screen-quiz">
-    <div class="logo-area" style="margin-bottom:32px;">
-      <div class="logo-tag">RIEX · DPI</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:22px;">Preencha para ver seu resultado:</p>
+    <div class="frow">
+      <label class="flabel">Seu nome</label>
+      <input class="finput" type="text" id="f-nome" placeholder="Como posso te chamar?">
+      <span class="ferr" id="e-nome">Informe seu nome.</span>
     </div>
-    <div class="progress-wrap">
-      <div class="progress-info">
-        <span class="progress-area" id="prog-area-name">Área 1</span>
-        <span class="progress-count" id="prog-count">Seção 1 de 7</span>
-      </div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-bar" style="width:14%"></div></div>
+    <div class="frow">
+      <label class="flabel">Seu melhor e-mail</label>
+      <input class="finput" type="email" id="f-email" placeholder="seu@email.com">
+      <span class="ferr" id="e-email">Informe um e-mail válido.</span>
     </div>
-    <div class="card" id="quiz-card"></div>
-    <div class="nav-btns">
-      <button class="btn btn-outline" id="btn-back" onclick="prevSection()">← Voltar</button>
-      <button class="btn" id="btn-next" onclick="nextSection()">Próxima área →</button>
+    <div class="frow" style="margin-bottom:28px;">
+      <label class="flabel">WhatsApp (opcional)</label>
+      <input class="finput" type="tel" id="f-tel" placeholder="(11) 99999-9999">
     </div>
-    <p class="footer-note" style="margin-top:24px;">RIEX · Diagnóstico Personalizado de Investimento</p>
+    <button class="btn" onclick="goQuiz()">Descobrir meu nível →</button>
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;">Seus dados são 100% seguros. Zero spam.</p>
   </div>
-
-  <!-- SCREEN 3: RESULTS -->
-  <div class="screen" id="screen-results">
-    <div class="logo-area" style="margin-bottom:32px;">
-      <div class="logo-tag">Seu Resultado</div>
-    </div>
-
-    <div class="card">
-      <div class="result-header">
-        <div class="result-score-big" id="res-total">--</div>
-        <div class="result-score-label">Pontuação total (de 100)</div>
-        <div class="result-profile" id="res-profile">--</div>
-        <p class="result-profile-desc" id="res-desc"></p>
-      </div>
-
-      <div class="section-divider"><hr><span>Seu mapa de evolução</span><hr></div>
-      <div class="chart-wrap"><canvas id="radar-chart"></canvas></div>
-
-      <div class="section-divider"><hr><span>Resultados por área</span><hr></div>
-      <div class="scores-grid" id="scores-grid"></div>
-
-      <div class="section-divider"><hr><span>Sua prioridade agora</span><hr></div>
-      <div id="priority-block"></div>
-    </div>
-
-    <div class="cta-box" id="cta-section">
-      <p class="cta-eyebrow">Próximo passo recomendado</p>
-      <h3 id="cta-title">Planilha de Viabilidade de Investimento</h3>
-      <p id="cta-text">Com base no seu diagnóstico, acesse a ferramenta que vai te ajudar a analisar qualquer oportunidade imobiliária com precisão — antes de colocar um centavo.</p>
-      <button class="btn btn-cta" onclick="window.open('[LINK_DA_PLANILHA]','_blank')">Quero Acessar a Planilha →</button>
-      <p class="cta-guarantee">Ferramenta usada por investidores do RIEX</p>
-    </div>
-
-    <div style="text-align:center;margin-top:32px;">
-      <button class="btn btn-outline" style="max-width:280px;" onclick="resetQuiz()">Refazer diagnóstico</button>
-    </div>
-    <p class="footer-note">RIEX · Inteligência em Investimento Imobiliário</p>
-  </div>
-
+  <p class="ftr">RIEX BRAZIL · Inteligência em Investimento Imobiliário</p>
 </div>
 
+<!-- QUIZ -->
+<div class="screen" id="s-quiz">
+  <div class="hdr" style="margin-bottom:28px;">
+    <div class="tag"><span class="dot"></span>RIEX BRAZIL<span class="dot"></span></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-lbl" id="prog-lbl">Pergunta 1 de 7</span>
+      <span class="prog-num" id="prog-pct">14%</span>
+    </div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:14%"></div></div>
+  </div>
+  <div class="card" id="q-card"></div>
+  <div class="nav">
+    <button class="btn btn-ghost" id="btn-back" onclick="prevQ()" style="display:none;">← Voltar</button>
+    <button class="btn" id="btn-next" onclick="nextQ()">Próxima →</button>
+  </div>
+  <span class="err-sel" id="err-sel">Selecione uma opção para continuar.</span>
+  <p class="ftr" style="margin-top:24px;">RIEX BRAZIL · Diagnóstico de Investidor</p>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="hdr" style="margin-bottom:28px;">
+    <div class="tag"><span class="dot"></span>RIEX BRAZIL · Seu Resultado<span class="dot"></span></div>
+  </div>
+  <div class="card">
+    <div id="r-badge"></div>
+    <div class="ptitle" id="r-title"></div>
+    <div class="dlabel">Seu diagnóstico</div>
+    <p class="pdiag" id="r-diag"></p>
+    <div class="brk-box">
+      <div class="brk-lbl">Quebra de crença</div>
+      <p id="r-brk"></p>
+    </div>
+    <div class="dir-box">
+      <div class="dir-lbl">Seu próximo passo</div>
+      <p id="r-dir"></p>
+    </div>
+  </div>
+
+  <div class="offer">
+    <p class="offer-eye">Solução recomendada para o seu perfil</p>
+    <h2 class="offer-title">Kit Investidor de Studios<br><em>que se pagam sozinhos</em></h2>
+    <div class="kit">
+      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Planilha de Viabilidade</strong> <span>— Analise qualquer imóvel em minutos (R$97)</span></div></div>
+      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Aula completa</strong> <span>— Como usar a planilha passo a passo</span></div></div>
+      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Aula bônus</strong> <span>— Como identificar um imóvel que se paga sozinho</span></div></div>
+      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>1 Estudo de caso real</strong> <span>— Veja como funciona na prática</span></div></div>
+      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Checklist de análise rápida</strong> <span>— Valide oportunidades antes de entrar</span></div></div>
+    </div>
+    <div class="price-row">
+      <span class="price-old">De R$ 297</span>
+      <span class="price-new">R$ 97</span>
+      <span class="price-tag">67% OFF</span>
+    </div>
+    <button class="btn btn-cta" onclick="window.open('https://payfast.greenn.com.br/5zy4uz2','_blank')">Quero o Kit Agora →</button>
+    <p class="guar">🔒 Pagamento 100% seguro · Acesso imediato após a compra</p>
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <button class="btn btn-ghost" style="max-width:260px;margin:0 auto;" onclick="resetQuiz()">Refazer o quiz</button>
+  </div>
+  <p class="ftr">RIEX BRAZIL · Inteligência em Investimento Imobiliário</p>
+</div>
+
+</div>
 <script>
-const AREAS = [
-  {
-    id: 'potencial',
-    name: 'Potencial de Investimento',
-    short: 'Potencial',
-    questions: [
-      'Sua disposição em colocar energia para viabilizar investimento em imóveis',
-      'O potencial da região que você pretende investir',
-      'Seu potencial de comprovação de renda',
-      'As possibilidades de obter capital além do financiamento imobiliário',
-      'Reserva de capital ou disponibilidade de aporte mensal para investir',
-    ]
-  },
-  {
-    id: 'mercado',
-    name: 'Estudo de Mercado',
-    short: 'Mercado',
-    questions: [
-      'Clareza do passo a passo para viabilizar investimentos com o mínimo de capital próprio',
-      'Conhecimento das prioridades mais importantes para ter sucesso no investimento imobiliário',
-      'Compreensão de qual nicho de mercado proporciona a maior rentabilidade',
-      'Clareza do público-alvo a ser atendido com os seus investimentos',
-      'Conhecimento dos principais concorrentes e como eles estão se posicionando no mercado',
-    ]
-  },
-  {
-    id: 'oportunidades',
-    name: 'Oportunidades',
-    short: 'Oportunidades',
-    questions: [
-      'Clareza sobre as principais oportunidades de investimento no mercado imobiliário',
-      'Capacidade de identificar oportunidades de crescimento e valorização da sua região',
-      'Clareza do que é necessário analisar em um imóvel para tomar a decisão de investimento',
-      'Capacidade de gerar dados para saber se uma oportunidade encontrada é boa ou não',
-      'Conhecimento das fontes geradoras de oportunidades no mercado imobiliário',
-    ]
-  },
-  {
-    id: 'viabilidade',
-    name: 'Viabilidade',
-    short: 'Viabilidade',
-    questions: [
-      'Nível de avaliação de oportunidades com base no retorno sobre o investimento (ROI)',
-      'Clareza dos principais indicadores a analisar antes de tomar a decisão de investimento',
-      'Conhecimento de todos os custos envolvidos no investimento imobiliário',
-      'Avaliação do potencial de retorno financeiro considerando receitas e despesas',
-      'Segurança na tomada de decisão de investimento baseada em dados',
-    ]
-  },
-  {
-    id: 'administracao',
-    name: 'Administração dos Imóveis',
-    short: 'Administração',
-    questions: [
-      'Clareza dos processos para administrar e manter seus imóveis',
-      'Compreensão dos custos envolvidos na operação dos imóveis',
-      'Entendimento de como manter uma alta taxa de ocupação',
-      'Capacidade de realizar a maior receita possível explorando todas as fontes do ativo',
-      'Habilidade de colocar o patrimônio em "piloto automático" sem despender tempo e energia',
-    ]
-  },
-  {
-    id: 'mentalidade',
-    name: 'Mentalidade de Investidor',
-    short: 'Mentalidade',
-    questions: [
-      'Clareza sobre criar um patrimônio de longo prazo, ao invés de focar em lucros rápidos',
-      'Capacidade de separar decisões de investimento de emoções ou impulsos',
-      'Crença na mentalidade de crescimento e adaptação às mudanças do mercado',
-      'Busca por orientação de investidores experientes para decisões mais estratégicas',
-      'Valorização da paciência e persistência como fundamentos do sucesso imobiliário',
-    ]
-  },
-  {
-    id: 'variaveis',
-    name: 'Domínio das Variáveis',
-    short: 'Variáveis',
-    questions: [
-      'Compreensão do impacto das taxas de financiamento e crédito imobiliário nos investimentos',
-      'Entendimento da influência da oferta e demanda na valorização ou desvalorização de ativos',
-      'Clareza sobre todos os custos: tributos, escritura, taxas, manutenções',
-      'Entendimento do impacto de mudanças legais e regulatórias no setor imobiliário',
-      'Conhecimento de quando entrar ou sair de um investimento com base no ciclo do mercado',
-    ]
-  }
+const QS = [
+  { q:'Você já investe em imóveis?', sub:'Seja honesto — isso vai calibrar seu resultado.', opts:[{t:'Nunca investi',p:0},{t:'Já pensei, mas nunca fiz',p:1},{t:'Já investi 1 vez',p:2},{t:'Já invisto com frequência',p:3}] },
+  { q:'Hoje, qual sua realidade financeira para investir?', sub:'Não se preocupe — a resposta pode te surpreender.', opts:[{t:'Não tenho dinheiro disponível',p:0},{t:'Até R$ 10 mil',p:1},{t:'R$ 10 mil a R$ 50 mil',p:2},{t:'Acima de R$ 50 mil',p:3}] },
+  { q:'Você conhece o conceito de investir com dinheiro de outras pessoas (OPM)?', sub:"OPM = Other People's Money — a base de grandes fortunas.", opts:[{t:'Nunca ouvi falar',p:0},{t:'Já ouvi, mas não entendo',p:1},{t:'Entendo o básico',p:2},{t:'Já tentei usar',p:3}] },
+  { q:'Qual seu principal objetivo com imóveis?', sub:'Escolha o que mais faz sentido pra você agora.', opts:[{t:'Renda mensal com aluguéis',p:2},{t:'Valorização patrimonial',p:1},{t:'Sair do aluguel',p:0},{t:'Viver de renda no futuro',p:2}] },
+  { q:'O que mais te impede hoje de investir?', sub:'Seja honesto — essa resposta define tudo.', opts:[{t:'Falta de dinheiro',p:0},{t:'Medo de errar',p:1},{t:'Não sei por onde começar',p:1},{t:'Falta de oportunidades boas',p:2}] },
+  { q:'Se você tivesse um método validado, você começaria?', sub:'Resposta honesta vale mais do que resposta "certa".', opts:[{t:'Sim, com certeza',p:3},{t:'Talvez',p:2},{t:'Ainda tenho dúvidas',p:1},{t:'Não agora',p:0}] },
+  { q:'Você gostaria de aprender a analisar se um imóvel se paga sozinho em poucos minutos?', sub:'Última pergunta.', opts:[{t:'Sim',p:2},{t:'Muito',p:3},{t:'Com certeza',p:3},{t:'Isso mudaria tudo pra mim',p:3}] },
 ];
 
-let scores = {};
-let currentSection = 0;
-let leadData = {};
+const PROFILES = [
+  { max:6, emoji:'🟢', label:'Perfil 1', title:'Iniciante Travado',
+    diag:'Você ainda está no começo e travado principalmente por falta de clareza e segurança. A boa notícia? A maioria dos grandes investidores começou exatamente onde você está.',
+    brk:'<strong>Você não precisa de dinheiro para começar</strong> — precisa saber identificar oportunidades viáveis. Com o método certo, o capital vem do próprio mercado.',
+    dir:'Seu primeiro passo não é investir… é <strong>aprender a analisar</strong>. Quem sabe analisar nunca fica sem oportunidade.' },
+  { max:11, emoji:'🟡', label:'Perfil 2', title:'Interessado Perdido',
+    diag:'Você já entende que imóveis são uma oportunidade real, mas ainda não tem método. Isso é perigoso — porque entusiasmo sem ferramenta vira aposta.',
+    brk:'<strong>Sem análise, qualquer investimento vira aposta.</strong> O que separa quem ganha de quem perde não é o imóvel — é a capacidade de medir o retorno antes de entrar.',
+    dir:'Você precisa de <strong>uma ferramenta que te dê segurança</strong> para dizer sim ou não com dados, não com feeling.' },
+  { max:16, emoji:'🔵', label:'Perfil 3', title:'Pronto pra Começar',
+    diag:'Você já tem mentalidade e interesse — o que falta é execução com estratégia. Você está no ponto certo para dar o primeiro passo com consistência.',
+    brk:'<strong>O erro agora não é começar… é começar errado.</strong> Um imóvel ruim pode travar sua jornada por anos. Um imóvel certo abre o caminho para o próximo.',
+    dir:'Você precisa <strong>validar oportunidades antes de entrar</strong>. Uma planilha de viabilidade é o que separa o investimento certo do tiro no escuro.' },
+  { max:99, emoji:'🔴', label:'Perfil 4', title:'Perfil Investidor',
+    diag:'Você já está em um nível acima da média. Conhece o jogo, já moveu peças e entende a lógica do mercado imobiliário.',
+    brk:'<strong>O próximo nível não é investir mais… é investir melhor e escalar com OPM.</strong> Quem está no seu nível perde dinheiro por falta de precisão — não por falta de coragem.',
+    dir:'Você precisa <strong>otimizar decisões e acelerar crescimento</strong> com ferramentas que entregam dados em segundos — não horas.' },
+];
 
-AREAS.forEach(a => { scores[a.id] = [5,5,5,5,5]; });
+let cur = 0, ans = new Array(QS.length).fill(null), lead = {};
 
-function startQuiz() {
-  const nome = document.getElementById('input-nome').value.trim();
-  const email = document.getElementById('input-email').value.trim();
-  let ok = true;
-  document.getElementById('err-nome').style.display = nome ? 'none' : 'block'; if (!nome) ok = false;
+function goQuiz() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const email = document.getElementById('f-email').value.trim();
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  document.getElementById('err-email').style.display = emailOk ? 'none' : 'block'; if (!emailOk) ok = false;
-  if (!ok) return;
-  leadData = { nome, email, tel: document.getElementById('input-tel').value.trim() };
-  currentSection = 0;
-  showSection(0);
-  document.getElementById('screen-intro').classList.remove('active');
-  document.getElementById('screen-quiz').classList.add('active');
+  document.getElementById('e-nome').style.display = nome ? 'none':'block';
+  document.getElementById('e-email').style.display = emailOk ? 'none':'block';
+  if (!nome || !emailOk) return;
+  lead = { nome, email, tel: document.getElementById('f-tel').value.trim() };
+  cur = 0; ans = new Array(QS.length).fill(null);
+  renderQ(0);
+  document.getElementById('s-intro').classList.remove('active');
+  document.getElementById('s-quiz').classList.add('active');
   window.scrollTo(0,0);
 }
 
-function showSection(idx) {
-  const area = AREAS[idx];
-  document.getElementById('prog-area-name').textContent = area.name;
-  document.getElementById('prog-count').textContent = `Seção ${idx+1} de 7`;
-  document.getElementById('prog-bar').style.width = `${((idx+1)/7)*100}%`;
-  document.getElementById('btn-back').style.display = idx === 0 ? 'none' : 'flex';
-  document.getElementById('btn-next').textContent = idx === 6 ? 'Ver Resultado →' : 'Próxima área →';
-
-  let html = `<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">Área ${idx+1} de 7</p>`;
-  area.questions.forEach((q, qi) => {
-    const val = scores[area.id][qi];
-    html += `
-    <div class="question-block">
-      <span class="q-num">Pergunta ${qi+1}</span>
-      <p class="q-text">${q}</p>
-      <div class="slider-wrap">
-        <span class="slider-label">0</span>
-        <input type="range" min="0" max="10" step="1" value="${val}" id="s_${idx}_${qi}" oninput="updateSlider(${idx},${qi},this.value)">
-        <span class="slider-val" id="sv_${idx}_${qi}">${val}</span>
-      </div>
-      <div class="slider-hints">
-        <span class="slider-hint">Nenhum domínio</span>
-        <span class="slider-hint">Domínio total</span>
-      </div>
-    </div>`;
+function renderQ(i) {
+  const q = QS[i];
+  const pct = Math.round(((i+1)/QS.length)*100);
+  document.getElementById('prog-lbl').textContent = `Pergunta ${i+1} de ${QS.length}`;
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('btn-back').style.display = i===0?'none':'flex';
+  document.getElementById('btn-next').textContent = i===QS.length-1?'Ver meu resultado →':'Próxima →';
+  document.getElementById('err-sel').style.display='none';
+  let h = `<span class="qlabel">Pergunta ${i+1} de ${QS.length}</span><div class="qtext">${q.q}</div><p class="qsub">${q.sub}</p><div class="opts">`;
+  q.opts.forEach((o,oi)=>{
+    const s = ans[i]===oi?' sel':'';
+    h+=`<div class="opt${s}" onclick="pick(${i},${oi},this)"><div class="oradio"><div class="odik"></div></div><span class="otxt">${o.t}</span></div>`;
   });
-  document.getElementById('quiz-card').innerHTML = html;
+  h+='</div>';
+  document.getElementById('q-card').innerHTML = h;
 }
 
-function updateSlider(si, qi, val) {
-  const area = AREAS[si];
-  scores[area.id][qi] = parseInt(val);
-  document.getElementById(`sv_${si}_${qi}`).textContent = val;
+function pick(qi,oi,el) {
+  ans[qi]=oi;
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('err-sel').style.display='none';
 }
 
-function nextSection() {
-  if (currentSection < 6) { currentSection++; showSection(currentSection); window.scrollTo(0,0); }
-  else { showResults(); }
+function nextQ() {
+  if (ans[cur]===null){ document.getElementById('err-sel').style.display='block'; return; }
+  if (cur<QS.length-1){ cur++; renderQ(cur); window.scrollTo(0,0); }
+  else showResult();
 }
 
-function prevSection() {
-  if (currentSection > 0) { currentSection--; showSection(currentSection); window.scrollTo(0,0); }
+function prevQ() {
+  if (cur>0){ cur--; renderQ(cur); window.scrollTo(0,0); }
 }
 
-function getAreaAvg(areaId) {
-  const arr = scores[areaId];
-  return Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10;
-}
-
-function showResults() {
-  document.getElementById('screen-quiz').classList.remove('active');
-  document.getElementById('screen-results').classList.add('active');
+function showResult() {
+  let total = 0;
+  ans.forEach((ai,qi)=>{ if(ai!==null) total+=QS[qi].opts[ai].p; });
+  const p = PROFILES.find(x=>total<=x.max);
+  document.getElementById('r-badge').innerHTML = `<div class="res-badge" style="background:rgba(0,200,240,0.1);border:1px solid rgba(0,200,240,0.25);color:#00C8F0;">${p.emoji} ${p.label} · ${total} pts</div>`;
+  document.getElementById('r-title').textContent = p.title;
+  document.getElementById('r-diag').textContent = p.diag;
+  document.getElementById('r-brk').innerHTML = p.brk;
+  document.getElementById('r-dir').innerHTML = p.dir;
+  document.getElementById('s-quiz').classList.remove('active');
+  document.getElementById('s-result').classList.add('active');
   window.scrollTo(0,0);
 
-  const avgs = AREAS.map(a => getAreaAvg(a.id));
-  const total = Math.round(avgs.reduce((a,b)=>a+b,0) / avgs.length * 10);
-
-  document.getElementById('res-total').textContent = total;
-
-  let profile, desc;
-  if (total >= 80) {
-    profile = 'Investidor Avançado';
-    desc = `Parabéns, ${leadData.nome}! Você demonstra alto domínio das áreas essenciais do investimento imobiliário. O próximo passo é otimizar os pontos de melhoria e escalar o patrimônio com mais inteligência.`;
-  } else if (total >= 55) {
-    profile = 'Investidor em Desenvolvimento';
-    desc = `Você já tem uma base sólida, ${leadData.nome}. Mas há gaps importantes que, se resolvidos, podem multiplicar seus resultados no mercado imobiliário. Foco e as ferramentas certas fazem toda a diferença.`;
-  } else if (total >= 30) {
-    profile = 'Investidor Iniciante';
-    desc = `Você está no começo da jornada, ${leadData.nome}. A boa notícia: identificar os gaps agora é o primeiro passo para não cometer os erros mais caros do mercado imobiliário.`;
-  } else {
-    profile = 'Pré-Investidor';
-    desc = `É hora de construir a base, ${leadData.nome}. Você tem um longo caminho de aprendizado pela frente — e essa é a melhor posição para começar: sabendo exatamente onde precisa evoluir.`;
-  }
-
-  document.getElementById('res-profile').textContent = profile;
-  document.getElementById('res-desc').textContent = desc;
-
-  // Scores grid
-  let gridHtml = '';
-  AREAS.forEach((a, i) => {
-    const avg = avgs[i];
-    gridHtml += `
-    <div class="score-card">
-      <div class="score-circle">${avg.toFixed(1)}</div>
-      <div class="score-card-info">
-        <div class="score-card-name">${a.name}</div>
-        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${avg*10}%"></div></div>
-      </div>
-    </div>`;
-  });
-  document.getElementById('scores-grid').innerHTML = gridHtml;
-
-  // Priority block
-  const minIdx = avgs.indexOf(Math.min(...avgs));
-  const minArea = AREAS[minIdx];
-  const priorityDescs = {
-    potencial: 'Trabalhe na estruturação do seu capital e na análise da sua capacidade de investimento. Sem uma base sólida, as melhores oportunidades passam em branco.',
-    mercado: 'Aprofunde seu conhecimento sobre nichos, concorrentes e público-alvo. Quem entende o mercado identifica oportunidades onde outros veem obstáculos.',
-    oportunidades: 'Desenvolva processos sistemáticos para encontrar e avaliar oportunidades. O ativo certo faz toda a diferença no resultado final.',
-    viabilidade: 'Aprenda a analisar ROI, custos e indicadores com precisão. Uma decisão baseada em dados vale mais do que qualquer intuição.',
-    administracao: 'Construa processos de gestão eficientes. Um imóvel bem administrado gera mais rentabilidade com menos esforço.',
-    mentalidade: 'Fortaleça as fundações psicológicas do investidor. A mentalidade certa é o que separa quem chega de quem desiste.',
-    variaveis: 'Domine os fatores externos que impactam seus investimentos. Quem entende o ciclo do mercado sabe a hora certa de agir.',
-  };
-  document.getElementById('priority-block').innerHTML = `
-  <div class="priority-box">
-    <h4>Foque em: ${minArea.name}</h4>
-    <p>${priorityDescs[minArea.id]}</p>
-  </div>`;
-
-  // Radar chart
-  if (window._radarChart) window._radarChart.destroy();
-  const ctx = document.getElementById('radar-chart').getContext('2d');
-  window._radarChart = new Chart(ctx, {
-    type: 'radar',
-    data: {
-      labels: AREAS.map(a => a.short),
-      datasets: [{
-        label: 'Seu perfil',
-        data: avgs,
-        backgroundColor: 'rgba(201,168,76,0.12)',
-        borderColor: '#C9A84C',
-        borderWidth: 2,
-        pointBackgroundColor: '#C9A84C',
-        pointBorderColor: '#0D0D0F',
-        pointBorderWidth: 2,
-        pointRadius: 5,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        r: {
-          min: 0, max: 10,
-          ticks: { stepSize: 2, display: false },
-          grid: { color: 'rgba(201,168,76,0.12)' },
-          angleLines: { color: 'rgba(201,168,76,0.1)' },
-          pointLabels: {
-            color: '#9A9088',
-            font: { family: "'DM Sans', sans-serif", size: 12 }
-          }
-        }
-      }
-    }
-  });
+  // Envia lead para Google Sheets
+  fetch('https://script.google.com/macros/s/AKfycbyFQZ9jGUHqinSOvDfw-Fpx-bFgcPn09tX-Eg0Ee0Rw5SscViDeWPIETG1AFETkjR2lXw/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      nome: lead.nome,
+      email: lead.email,
+      tel: lead.tel,
+      total: total,
+      perfil: p.label + ' — ' + p.title
+    })
+  }).catch(()=>{});
 }
 
 function resetQuiz() {
-  AREAS.forEach(a => { scores[a.id] = [5,5,5,5,5]; });
-  currentSection = 0;
-  document.getElementById('screen-results').classList.remove('active');
-  document.getElementById('input-nome').value = '';
-  document.getElementById('input-email').value = '';
-  document.getElementById('input-tel').value = '';
-  document.getElementById('screen-intro').classList.add('active');
+  ['f-nome','f-email','f-tel'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('s-result').classList.remove('active');
+  document.getElementById('s-intro').classList.add('active');
   window.scrollTo(0,0);
 }
 </script>
