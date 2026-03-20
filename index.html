@@ -389,19 +389,9 @@ function showResult() {
   document.getElementById('s-result').classList.add('active');
   window.scrollTo(0,0);
 
-  // Envia lead para Google Sheets
-  fetch('https://script.google.com/macros/s/AKfycbyFQZ9jGUHqinSOvDfw-Fpx-bFgcPn09tX-Eg0Ee0Rw5SscViDeWPIETG1AFETkjR2lXw/exec', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      nome: lead.nome,
-      email: lead.email,
-      tel: lead.tel,
-      total: total,
-      perfil: p.label + ' — ' + p.title
-    })
-  }).catch(()=>{});
+  // Envia lead para Google Sheets via GET (sem CORS)
+  var params = new URLSearchParams({nome: lead.nome, email: lead.email, tel: lead.tel||'', total: String(total), perfil: p.label + ' — ' + p.title});
+  new Image().src = 'https://script.google.com/macros/s/AKfycbyFQZ9jGUHqinSOvDfw-Fpx-bFgcPn09tX-Eg0Ee0Rw5SscViDeWPIETG1AFETkjR2lXw/exec?' + params.toString();
 }
 
 function resetQuiz() {
