@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPI — Diagnóstico Personalizado de Investimento</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E9C8;
+    --dark: #0D0D0F;
+    --dark-2: #141418;
+    --dark-3: #1C1C22;
+    --dark-4: #252530;
+    --text: #F0EDE8;
+    --text-muted: #9A9088;
+    --border: rgba(201,168,76,0.18);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px 80px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* LOGO / HEADER */
+  .logo-area {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .logo-tag {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--border);
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+  .logo-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .logo-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .gold-line {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--dark-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    margin-bottom: 24px;
+  }
+  @media(max-width:520px) { .card { padding: 24px 20px; } }
+
+  /* INTRO */
+  .intro-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .intro-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .intro-text strong { color: var(--gold); font-weight: 500; }
+
+  .areas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+  @media(max-width:460px) { .areas-grid { grid-template-columns: 1fr; } }
+  .area-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--dark-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .area-pill .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 20px;
+  }
+
+  /* FORM */
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    background: var(--dark-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+  /* BUTTON */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 3px;
+    padding: 15px 32px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    width: 100%;
+  }
+  .btn:hover { background: var(--gold-light); }
+  .btn:active { transform: scale(0.99); }
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.08); }
+  .btn-cta {
+    background: linear-gradient(135deg, var(--gold) 0%, #A67C2A 100%);
+    font-size: 15px;
+    padding: 18px 32px;
+    letter-spacing: 1.5px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 32px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-area {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .progress-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  .progress-bar-bg {
+    height: 2px;
+    background: var(--dark-4);
+    border-radius: 2px;
+  }
+  .progress-bar-fill {
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* QUESTION */
+  .question-block {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+  .question-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .q-num {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .q-text {
+    font-size: 16px;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+
+  /* SLIDER */
+  .slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .slider-label { font-size: 11px; color: var(--text-muted); min-width: 28px; text-align: center; letter-spacing: 1px; }
+
+  input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--dark-4);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--dark);
+    box-shadow: 0 0 0 1px var(--gold);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+  input[type=range]::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--gold); border: 2px solid var(--dark); cursor: pointer;
+  }
+  .slider-val {
+    min-width: 36px;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .slider-hints {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 0 48px;
+  }
+  .slider-hint { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+
+  /* NAV BUTTONS */
+  .nav-btns {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .nav-btns .btn { flex: 1; }
+
+  /* RESULTS */
+  .result-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .result-score-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .result-score-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .result-profile {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 600;
+    color: var(--text);
+    margin: 16px 0 8px;
+  }
+  .result-profile-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .chart-wrap {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 40px;
+  }
+
+  .scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  @media(max-width:480px) { .scores-grid { grid-template-columns: 1fr; } }
+
+  .score-card {
+    background: var(--dark-3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .score-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .score-card-info { flex: 1; min-width: 0; }
+  .score-card-name { font-size: 12px; color: var(--text-muted); line-height: 1.3; }
+  .score-bar-bg { height: 3px; background: var(--dark-4); border-radius: 2px; margin-top: 6px; }
+  .score-bar-fill { height: 3px; background: var(--gold); border-radius: 2px; }
+
+  /* PRIORITY BOX */
+  .priority-box {
+    background: var(--dark-3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .priority-box h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .priority-box p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* CTA BOX */
+  .cta-box {
+    background: var(--dark-2);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 4px;
+    padding: 36px;
+    text-align: center;
+    margin-top: 32px;
+  }
+  .cta-box .cta-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .cta-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 30px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .cta-box p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-guarantee {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* SECTION DIVIDER */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 24px;
+  }
+  .section-divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+  .section-divider span { font-size: 11px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; white-space: nowrap; }
+
+  /* ERROR */
+  .error-msg { font-size: 12px; color: #E24B4A; margin-top: 6px; display: none; }
+
+  /* FOOTER NOTE */
+  .footer-note { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 40px; opacity: 0.5; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- SCREEN 1: INTRO + LEAD CAPTURE -->
+  <div class="screen active" id="screen-intro">
+    <div class="logo-area">
+      <div class="logo-tag">RIEX · Diagnóstico</div>
+      <h1 class="logo-title">Descubra seu nível<br>como investidor</h1>
+      <p class="logo-sub">DPI — Diagnóstico Personalizado de Investimento</p>
+      <div class="gold-line"></div>
+    </div>
+
+    <div class="card">
+      <p class="intro-headline">Onde você realmente está no mercado imobiliário?</p>
+      <p class="intro-text">
+        Este diagnóstico avalia <strong>7 áreas fundamentais</strong> do investimento imobiliário. Em menos de 10 minutos, você descobre seus pontos fortes, seus gaps e o que fazer para avançar com consistência.
+      </p>
+      <div class="areas-grid">
+        <div class="area-pill"><span class="num">01</span>Potencial de Investimento</div>
+        <div class="area-pill"><span class="num">02</span>Estudo de Mercado</div>
+        <div class="area-pill"><span class="num">03</span>Oportunidades</div>
+        <div class="area-pill"><span class="num">04</span>Viabilidade</div>
+        <div class="area-pill"><span class="num">05</span>Administração de Imóveis</div>
+        <div class="area-pill"><span class="num">06</span>Mentalidade de Investidor</div>
+        <div class="area-pill"><span class="num">07</span>Domínio das Variáveis</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="input-nome">Seu nome</label>
+        <input class="form-input" type="text" id="input-nome" placeholder="Como posso te chamar?">
+        <span class="error-msg" id="err-nome">Por favor, informe seu nome.</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="input-email">Seu e-mail</label>
+        <input class="form-input" type="email" id="input-email" placeholder="seu@email.com">
+        <span class="error-msg" id="err-email">Por favor, informe um e-mail válido.</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="input-tel">WhatsApp (opcional)</label>
+        <input class="form-input" type="tel" id="input-tel" placeholder="(11) 99999-9999">
+      </div>
+
+      <button class="btn" onclick="startQuiz()">Iniciar Diagnóstico →</button>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:14px;line-height:1.5;">Seus dados são 100% seguros. Não enviamos spam.</p>
+    </div>
+    <p class="footer-note">RIEX · Inteligência em Investimento Imobiliário</p>
+  </div>
+
+  <!-- SCREEN 2: QUIZ (rendered dynamically) -->
+  <div class="screen" id="screen-quiz">
+    <div class="logo-area" style="margin-bottom:32px;">
+      <div class="logo-tag">RIEX · DPI</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span class="progress-area" id="prog-area-name">Área 1</span>
+        <span class="progress-count" id="prog-count">Seção 1 de 7</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-bar" style="width:14%"></div></div>
+    </div>
+    <div class="card" id="quiz-card"></div>
+    <div class="nav-btns">
+      <button class="btn btn-outline" id="btn-back" onclick="prevSection()">← Voltar</button>
+      <button class="btn" id="btn-next" onclick="nextSection()">Próxima área →</button>
+    </div>
+    <p class="footer-note" style="margin-top:24px;">RIEX · Diagnóstico Personalizado de Investimento</p>
+  </div>
+
+  <!-- SCREEN 3: RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="logo-area" style="margin-bottom:32px;">
+      <div class="logo-tag">Seu Resultado</div>
+    </div>
+
+    <div class="card">
+      <div class="result-header">
+        <div class="result-score-big" id="res-total">--</div>
+        <div class="result-score-label">Pontuação total (de 100)</div>
+        <div class="result-profile" id="res-profile">--</div>
+        <p class="result-profile-desc" id="res-desc"></p>
+      </div>
+
+      <div class="section-divider"><hr><span>Seu mapa de evolução</span><hr></div>
+      <div class="chart-wrap"><canvas id="radar-chart"></canvas></div>
+
+      <div class="section-divider"><hr><span>Resultados por área</span><hr></div>
+      <div class="scores-grid" id="scores-grid"></div>
+
+      <div class="section-divider"><hr><span>Sua prioridade agora</span><hr></div>
+      <div id="priority-block"></div>
+    </div>
+
+    <div class="cta-box" id="cta-section">
+      <p class="cta-eyebrow">Próximo passo recomendado</p>
+      <h3 id="cta-title">Planilha de Viabilidade de Investimento</h3>
+      <p id="cta-text">Com base no seu diagnóstico, acesse a ferramenta que vai te ajudar a analisar qualquer oportunidade imobiliária com precisão — antes de colocar um centavo.</p>
+      <button class="btn btn-cta" onclick="window.open('[LINK_DA_PLANILHA]','_blank')">Quero Acessar a Planilha →</button>
+      <p class="cta-guarantee">Ferramenta usada por investidores do RIEX</p>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <button class="btn btn-outline" style="max-width:280px;" onclick="resetQuiz()">Refazer diagnóstico</button>
+    </div>
+    <p class="footer-note">RIEX · Inteligência em Investimento Imobiliário</p>
+  </div>
+
+</div>
+
+<script>
+const AREAS = [
+  {
+    id: 'potencial',
+    name: 'Potencial de Investimento',
+    short: 'Potencial',
+    questions: [
+      'Sua disposição em colocar energia para viabilizar investimento em imóveis',
+      'O potencial da região que você pretende investir',
+      'Seu potencial de comprovação de renda',
+      'As possibilidades de obter capital além do financiamento imobiliário',
+      'Reserva de capital ou disponibilidade de aporte mensal para investir',
+    ]
+  },
+  {
+    id: 'mercado',
+    name: 'Estudo de Mercado',
+    short: 'Mercado',
+    questions: [
+      'Clareza do passo a passo para viabilizar investimentos com o mínimo de capital próprio',
+      'Conhecimento das prioridades mais importantes para ter sucesso no investimento imobiliário',
+      'Compreensão de qual nicho de mercado proporciona a maior rentabilidade',
+      'Clareza do público-alvo a ser atendido com os seus investimentos',
+      'Conhecimento dos principais concorrentes e como eles estão se posicionando no mercado',
+    ]
+  },
+  {
+    id: 'oportunidades',
+    name: 'Oportunidades',
+    short: 'Oportunidades',
+    questions: [
+      'Clareza sobre as principais oportunidades de investimento no mercado imobiliário',
+      'Capacidade de identificar oportunidades de crescimento e valorização da sua região',
+      'Clareza do que é necessário analisar em um imóvel para tomar a decisão de investimento',
+      'Capacidade de gerar dados para saber se uma oportunidade encontrada é boa ou não',
+      'Conhecimento das fontes geradoras de oportunidades no mercado imobiliário',
+    ]
+  },
+  {
+    id: 'viabilidade',
+    name: 'Viabilidade',
+    short: 'Viabilidade',
+    questions: [
+      'Nível de avaliação de oportunidades com base no retorno sobre o investimento (ROI)',
+      'Clareza dos principais indicadores a analisar antes de tomar a decisão de investimento',
+      'Conhecimento de todos os custos envolvidos no investimento imobiliário',
+      'Avaliação do potencial de retorno financeiro considerando receitas e despesas',
+      'Segurança na tomada de decisão de investimento baseada em dados',
+    ]
+  },
+  {
+    id: 'administracao',
+    name: 'Administração dos Imóveis',
+    short: 'Administração',
+    questions: [
+      'Clareza dos processos para administrar e manter seus imóveis',
+      'Compreensão dos custos envolvidos na operação dos imóveis',
+      'Entendimento de como manter uma alta taxa de ocupação',
+      'Capacidade de realizar a maior receita possível explorando todas as fontes do ativo',
+      'Habilidade de colocar o patrimônio em "piloto automático" sem despender tempo e energia',
+    ]
+  },
+  {
+    id: 'mentalidade',
+    name: 'Mentalidade de Investidor',
+    short: 'Mentalidade',
+    questions: [
+      'Clareza sobre criar um patrimônio de longo prazo, ao invés de focar em lucros rápidos',
+      'Capacidade de separar decisões de investimento de emoções ou impulsos',
+      'Crença na mentalidade de crescimento e adaptação às mudanças do mercado',
+      'Busca por orientação de investidores experientes para decisões mais estratégicas',
+      'Valorização da paciência e persistência como fundamentos do sucesso imobiliário',
+    ]
+  },
+  {
+    id: 'variaveis',
+    name: 'Domínio das Variáveis',
+    short: 'Variáveis',
+    questions: [
+      'Compreensão do impacto das taxas de financiamento e crédito imobiliário nos investimentos',
+      'Entendimento da influência da oferta e demanda na valorização ou desvalorização de ativos',
+      'Clareza sobre todos os custos: tributos, escritura, taxas, manutenções',
+      'Entendimento do impacto de mudanças legais e regulatórias no setor imobiliário',
+      'Conhecimento de quando entrar ou sair de um investimento com base no ciclo do mercado',
+    ]
+  }
+];
+
+let scores = {};
+let currentSection = 0;
+let leadData = {};
+
+AREAS.forEach(a => { scores[a.id] = [5,5,5,5,5]; });
+
+function startQuiz() {
+  const nome = document.getElementById('input-nome').value.trim();
+  const email = document.getElementById('input-email').value.trim();
+  let ok = true;
+  document.getElementById('err-nome').style.display = nome ? 'none' : 'block'; if (!nome) ok = false;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  document.getElementById('err-email').style.display = emailOk ? 'none' : 'block'; if (!emailOk) ok = false;
+  if (!ok) return;
+  leadData = { nome, email, tel: document.getElementById('input-tel').value.trim() };
+  currentSection = 0;
+  showSection(0);
+  document.getElementById('screen-intro').classList.remove('active');
+  document.getElementById('screen-quiz').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showSection(idx) {
+  const area = AREAS[idx];
+  document.getElementById('prog-area-name').textContent = area.name;
+  document.getElementById('prog-count').textContent = `Seção ${idx+1} de 7`;
+  document.getElementById('prog-bar').style.width = `${((idx+1)/7)*100}%`;
+  document.getElementById('btn-back').style.display = idx === 0 ? 'none' : 'flex';
+  document.getElementById('btn-next').textContent = idx === 6 ? 'Ver Resultado →' : 'Próxima área →';
+
+  let html = `<p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;">Área ${idx+1} de 7</p>`;
+  area.questions.forEach((q, qi) => {
+    const val = scores[area.id][qi];
+    html += `
+    <div class="question-block">
+      <span class="q-num">Pergunta ${qi+1}</span>
+      <p class="q-text">${q}</p>
+      <div class="slider-wrap">
+        <span class="slider-label">0</span>
+        <input type="range" min="0" max="10" step="1" value="${val}" id="s_${idx}_${qi}" oninput="updateSlider(${idx},${qi},this.value)">
+        <span class="slider-val" id="sv_${idx}_${qi}">${val}</span>
+      </div>
+      <div class="slider-hints">
+        <span class="slider-hint">Nenhum domínio</span>
+        <span class="slider-hint">Domínio total</span>
+      </div>
+    </div>`;
+  });
+  document.getElementById('quiz-card').innerHTML = html;
+}
+
+function updateSlider(si, qi, val) {
+  const area = AREAS[si];
+  scores[area.id][qi] = parseInt(val);
+  document.getElementById(`sv_${si}_${qi}`).textContent = val;
+}
+
+function nextSection() {
+  if (currentSection < 6) { currentSection++; showSection(currentSection); window.scrollTo(0,0); }
+  else { showResults(); }
+}
+
+function prevSection() {
+  if (currentSection > 0) { currentSection--; showSection(currentSection); window.scrollTo(0,0); }
+}
+
+function getAreaAvg(areaId) {
+  const arr = scores[areaId];
+  return Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*10)/10;
+}
+
+function showResults() {
+  document.getElementById('screen-quiz').classList.remove('active');
+  document.getElementById('screen-results').classList.add('active');
+  window.scrollTo(0,0);
+
+  const avgs = AREAS.map(a => getAreaAvg(a.id));
+  const total = Math.round(avgs.reduce((a,b)=>a+b,0) / avgs.length * 10);
+
+  document.getElementById('res-total').textContent = total;
+
+  let profile, desc;
+  if (total >= 80) {
+    profile = 'Investidor Avançado';
+    desc = `Parabéns, ${leadData.nome}! Você demonstra alto domínio das áreas essenciais do investimento imobiliário. O próximo passo é otimizar os pontos de melhoria e escalar o patrimônio com mais inteligência.`;
+  } else if (total >= 55) {
+    profile = 'Investidor em Desenvolvimento';
+    desc = `Você já tem uma base sólida, ${leadData.nome}. Mas há gaps importantes que, se resolvidos, podem multiplicar seus resultados no mercado imobiliário. Foco e as ferramentas certas fazem toda a diferença.`;
+  } else if (total >= 30) {
+    profile = 'Investidor Iniciante';
+    desc = `Você está no começo da jornada, ${leadData.nome}. A boa notícia: identificar os gaps agora é o primeiro passo para não cometer os erros mais caros do mercado imobiliário.`;
+  } else {
+    profile = 'Pré-Investidor';
+    desc = `É hora de construir a base, ${leadData.nome}. Você tem um longo caminho de aprendizado pela frente — e essa é a melhor posição para começar: sabendo exatamente onde precisa evoluir.`;
+  }
+
+  document.getElementById('res-profile').textContent = profile;
+  document.getElementById('res-desc').textContent = desc;
+
+  // Scores grid
+  let gridHtml = '';
+  AREAS.forEach((a, i) => {
+    const avg = avgs[i];
+    gridHtml += `
+    <div class="score-card">
+      <div class="score-circle">${avg.toFixed(1)}</div>
+      <div class="score-card-info">
+        <div class="score-card-name">${a.name}</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${avg*10}%"></div></div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('scores-grid').innerHTML = gridHtml;
+
+  // Priority block
+  const minIdx = avgs.indexOf(Math.min(...avgs));
+  const minArea = AREAS[minIdx];
+  const priorityDescs = {
+    potencial: 'Trabalhe na estruturação do seu capital e na análise da sua capacidade de investimento. Sem uma base sólida, as melhores oportunidades passam em branco.',
+    mercado: 'Aprofunde seu conhecimento sobre nichos, concorrentes e público-alvo. Quem entende o mercado identifica oportunidades onde outros veem obstáculos.',
+    oportunidades: 'Desenvolva processos sistemáticos para encontrar e avaliar oportunidades. O ativo certo faz toda a diferença no resultado final.',
+    viabilidade: 'Aprenda a analisar ROI, custos e indicadores com precisão. Uma decisão baseada em dados vale mais do que qualquer intuição.',
+    administracao: 'Construa processos de gestão eficientes. Um imóvel bem administrado gera mais rentabilidade com menos esforço.',
+    mentalidade: 'Fortaleça as fundações psicológicas do investidor. A mentalidade certa é o que separa quem chega de quem desiste.',
+    variaveis: 'Domine os fatores externos que impactam seus investimentos. Quem entende o ciclo do mercado sabe a hora certa de agir.',
+  };
+  document.getElementById('priority-block').innerHTML = `
+  <div class="priority-box">
+    <h4>Foque em: ${minArea.name}</h4>
+    <p>${priorityDescs[minArea.id]}</p>
+  </div>`;
+
+  // Radar chart
+  if (window._radarChart) window._radarChart.destroy();
+  const ctx = document.getElementById('radar-chart').getContext('2d');
+  window._radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: AREAS.map(a => a.short),
+      datasets: [{
+        label: 'Seu perfil',
+        data: avgs,
+        backgroundColor: 'rgba(201,168,76,0.12)',
+        borderColor: '#C9A84C',
+        borderWidth: 2,
+        pointBackgroundColor: '#C9A84C',
+        pointBorderColor: '#0D0D0F',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { stepSize: 2, display: false },
+          grid: { color: 'rgba(201,168,76,0.12)' },
+          angleLines: { color: 'rgba(201,168,76,0.1)' },
+          pointLabels: {
+            color: '#9A9088',
+            font: { family: "'DM Sans', sans-serif", size: 12 }
+          }
+        }
+      }
+    }
+  });
+}
+
+function resetQuiz() {
+  AREAS.forEach(a => { scores[a.id] = [5,5,5,5,5]; });
+  currentSection = 0;
+  document.getElementById('screen-results').classList.remove('active');
+  document.getElementById('input-nome').value = '';
+  document.getElementById('input-email').value = '';
+  document.getElementById('input-tel').value = '';
+  document.getElementById('screen-intro').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
