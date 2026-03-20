@@ -6,188 +6,110 @@
 <title>Quiz RIEX — Qual seu nível para investir em imóveis?</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --cyan: #00C8F0;
-  --cyan-dim: rgba(0,200,240,0.12);
-  --cyan-border: rgba(0,200,240,0.22);
-  --blue: #0066CC;
-  --dark: #080E18;
-  --dark-2: #0D1420;
-  --dark-3: #111E2E;
-  --dark-4: #182338;
-  --text: #EEF4FA;
-  --muted: #6B8BAD;
-  --green: #00E096;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cyan:#00C8F0;--cyan-dim:rgba(0,200,240,0.12);--cyan-border:rgba(0,200,240,0.22);
+  --blue:#0066CC;--dark:#080E18;--dark-2:#0D1420;--dark-3:#111E2E;--dark-4:#182338;
+  --text:#EEF4FA;--muted:#6B8BAD;--green:#00E096;--amber:#FFB800;
 }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--dark);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 32px 16px 80px;
-  background-image:
-    radial-gradient(ellipse at 85% 0%, rgba(0,102,204,0.14) 0%, transparent 55%),
-    radial-gradient(ellipse at 0% 100%, rgba(0,200,240,0.07) 0%, transparent 45%);
-}
-
-.wrap { width: 100%; max-width: 680px; }
-.screen { display: none; }
-.screen.active { display: block; }
-
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px 80px;background-image:radial-gradient(ellipse at 85% 0%,rgba(0,102,204,0.14) 0%,transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(0,200,240,0.07) 0%,transparent 45%);}
+.wrap{width:100%;max-width:680px;}
+.screen{display:none;}.screen.active{display:block;}
 /* HEADER */
-.hdr { text-align: center; margin-bottom: 36px; }
-.tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--cyan); border: 1px solid var(--cyan-border);
-  padding: 6px 16px; border-radius: 2px; margin-bottom: 28px;
-}
-.dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; }
-h1 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(28px, 6vw, 50px);
-  font-weight: 800; line-height: 1.06;
-  text-transform: uppercase; letter-spacing: -0.5px;
-  color: var(--text); margin-bottom: 16px;
-}
-h1 em { color: var(--cyan); font-style: normal; }
-.sub { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 28px; }
-.badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
-.bdg { font-size: 12px; color: var(--cyan); background: var(--cyan-dim); border: 1px solid var(--cyan-border); border-radius: 2px; padding: 5px 12px; }
-
+.hdr{text-align:center;margin-bottom:36px;}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);border:1px solid var(--cyan-border);padding:6px 16px;border-radius:2px;margin-bottom:28px;}
+.dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;display:inline-block;}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,6vw,50px);font-weight:800;line-height:1.06;text-transform:uppercase;letter-spacing:-0.5px;color:var(--text);margin-bottom:16px;}
+h1 em{color:var(--cyan);font-style:normal;}
+.sub{font-size:15px;color:var(--muted);line-height:1.65;max-width:520px;margin:0 auto 28px;}
+.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.bdg{font-size:12px;color:var(--cyan);background:var(--cyan-dim);border:1px solid var(--cyan-border);border-radius:2px;padding:5px 12px;}
 /* CARD */
-.card {
-  background: var(--dark-2); border: 1px solid var(--cyan-border);
-  border-radius: 6px; padding: 40px; margin-bottom: 20px;
-  position: relative; overflow: hidden;
-}
-.card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 100%);
-}
-@media(max-width:520px) { .card { padding: 24px 18px; } }
-
+.card{background:var(--dark-2);border:1px solid var(--cyan-border);border-radius:6px;padding:40px;margin-bottom:20px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan) 0%,var(--blue) 100%);}
+@media(max-width:520px){.card{padding:24px 18px;}}
 /* FORM */
-.frow { margin-bottom: 18px; }
-.flabel { display: block; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.finput {
-  width: 100%; background: var(--dark-3); border: 1px solid rgba(0,200,240,0.14);
-  border-radius: 4px; padding: 13px 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
-  outline: none; transition: border-color 0.2s;
-}
-.finput:focus { border-color: var(--cyan); }
-.finput::placeholder { color: var(--muted); opacity: 0.5; }
-.ferr { font-size: 12px; color: #F05050; margin-top: 5px; display: none; }
-
+.frow{margin-bottom:18px;}
+.flabel{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.finput{width:100%;background:var(--dark-3);border:1px solid rgba(0,200,240,0.14);border-radius:4px;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.finput:focus{border-color:var(--cyan);}
+.finput::placeholder{color:var(--muted);opacity:0.5;}
+.ferr{font-size:12px;color:#F05050;margin-top:5px;display:none;}
 /* BUTTONS */
-.btn {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 100%);
-  color: #fff; font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-  border: none; border-radius: 4px; padding: 17px 32px; cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
-}
-.btn:hover { opacity: 0.88; }
-.btn:active { transform: scale(0.99); }
-.btn-ghost {
-  background: transparent; color: var(--muted);
-  border: 1px solid rgba(0,200,240,0.14);
-  font-size: 14px; font-family: 'DM Sans', sans-serif;
-  font-weight: 400; letter-spacing: 0; text-transform: none; padding: 12px;
-}
-.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); opacity: 1; }
-.btn-cta {
-  font-size: 20px; padding: 20px 32px;
-  background: linear-gradient(135deg, #00E096 0%, #00C8F0 50%, #0066CC 100%);
-  box-shadow: 0 0 32px rgba(0,200,240,0.2);
-}
-
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:linear-gradient(135deg,var(--cyan) 0%,var(--blue) 100%);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:none;border-radius:4px;padding:17px 32px;cursor:pointer;transition:opacity 0.2s,transform 0.1s;}
+.btn:hover{opacity:0.88;}
+.btn:active{transform:scale(0.99);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(0,200,240,0.14);font-size:14px;font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;padding:12px;}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);opacity:1;}
+.btn-cta{font-size:20px;padding:20px 32px;background:linear-gradient(135deg,#00E096 0%,#00C8F0 50%,#0066CC 100%);box-shadow:0 0 32px rgba(0,200,240,0.2);}
+.btn-call{font-size:17px;padding:17px 32px;background:linear-gradient(135deg,#FFB800 0%,#FF6B00 100%);box-shadow:0 0 24px rgba(255,184,0,0.18);margin-top:12px;}
 /* PROGRESS */
-.prog-wrap { margin-bottom: 28px; }
-.prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.prog-lbl { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-.prog-num { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--cyan); }
-.prog-bg { height: 3px; background: var(--dark-4); border-radius: 3px; }
-.prog-fill { height: 3px; background: linear-gradient(90deg, var(--cyan), var(--blue)); border-radius: 3px; transition: width 0.4s ease; }
-
+.prog-wrap{margin-bottom:28px;}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prog-lbl{font-size:12px;color:var(--muted);letter-spacing:1px;}
+.prog-num{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--cyan);}
+.prog-bg{height:3px;background:var(--dark-4);border-radius:3px;}
+.prog-fill{height:3px;background:linear-gradient(90deg,var(--cyan),var(--blue));border-radius:3px;transition:width 0.4s ease;}
 /* QUESTION */
-.qlabel { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px; display: block; }
-.qtext { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(20px, 4vw, 30px); font-weight: 700; text-transform: uppercase; line-height: 1.15; color: var(--text); margin-bottom: 8px; }
-.qsub { font-size: 13px; color: var(--muted); margin-bottom: 28px; font-style: italic; }
-
+.qlabel{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;display:block;}
+.qtext{font-family:'Barlow Condensed',sans-serif;font-size:clamp(20px,4vw,30px);font-weight:700;text-transform:uppercase;line-height:1.15;color:var(--text);margin-bottom:8px;}
+.qsub{font-size:13px;color:var(--muted);margin-bottom:28px;font-style:italic;}
 /* OPTIONS */
-.opts { display: flex; flex-direction: column; gap: 10px; }
-.opt {
-  display: flex; align-items: center; gap: 14px;
-  background: var(--dark-3); border: 1px solid rgba(0,200,240,0.1);
-  border-radius: 4px; padding: 14px 18px; cursor: pointer;
-  transition: border-color 0.2s, background 0.2s; user-select: none;
-}
-.opt:hover { border-color: rgba(0,200,240,0.32); background: rgba(0,200,240,0.05); }
-.opt.sel { border-color: var(--cyan); background: rgba(0,200,240,0.09); }
-.oradio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(0,200,240,0.28); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; }
-.opt.sel .oradio { border-color: var(--cyan); }
-.odik { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); display: none; }
-.opt.sel .odik { display: block; }
-.otxt { font-size: 15px; color: var(--text); font-weight: 300; line-height: 1.3; }
-.opt.sel .otxt { font-weight: 400; }
-
+.opts{display:flex;flex-direction:column;gap:10px;}
+.opt{display:flex;align-items:center;gap:14px;background:var(--dark-3);border:1px solid rgba(0,200,240,0.1);border-radius:4px;padding:14px 18px;cursor:pointer;transition:border-color 0.2s,background 0.2s;user-select:none;}
+.opt:hover{border-color:rgba(0,200,240,0.32);background:rgba(0,200,240,0.05);}
+.opt.sel{border-color:var(--cyan);background:rgba(0,200,240,0.09);}
+.oradio{width:20px;height:20px;border-radius:50%;border:2px solid rgba(0,200,240,0.28);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;}
+.opt.sel .oradio{border-color:var(--cyan);}
+.odik{width:10px;height:10px;border-radius:50%;background:var(--cyan);display:none;}
+.opt.sel .odik{display:block;}
+.otxt{font-size:15px;color:var(--text);font-weight:300;line-height:1.3;}
+.opt.sel .otxt{font-weight:400;}
 /* NAV */
-.nav { display: flex; gap: 10px; margin-top: 24px; }
-.nav .btn { flex: 1; }
-.err-sel { font-size: 12px; color: #F05050; margin-top: 8px; text-align: center; display: none; }
-
+.nav{display:flex;gap:10px;margin-top:24px;}
+.nav .btn{flex:1;}
+.err-sel{font-size:12px;color:#F05050;margin-top:8px;text-align:center;display:none;}
 /* RESULT */
-.res-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; margin-bottom: 16px; }
-.ptitle { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(30px, 7vw, 54px); font-weight: 800; text-transform: uppercase; line-height: 1; margin-bottom: 14px; }
-.dlabel { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.pdiag { font-size: 15px; color: var(--text); line-height: 1.65; margin-bottom: 24px; }
-
-.brk-box { background: rgba(0,200,240,0.06); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); border-radius: 4px; padding: 18px 20px; margin-bottom: 12px; }
-.brk-lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
-.brk-box p { font-size: 14px; color: var(--muted); line-height: 1.65; }
-.brk-box strong { color: var(--text); font-weight: 500; }
-
-.dir-box { background: var(--dark-3); border: 1px solid rgba(0,200,240,0.1); border-left: 3px solid var(--blue); border-radius: 4px; padding: 18px 20px; margin-bottom: 28px; }
-.dir-lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.dir-box p { font-size: 14px; color: var(--text); line-height: 1.65; }
-.dir-box strong { color: var(--cyan); }
-
+.res-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:2px;margin-bottom:16px;}
+.ptitle{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,7vw,54px);font-weight:800;text-transform:uppercase;line-height:1;margin-bottom:14px;}
+.dlabel{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.pdiag{font-size:15px;color:var(--text);line-height:1.65;margin-bottom:24px;}
+.brk-box{background:rgba(0,200,240,0.06);border:1px solid var(--cyan-border);border-left:3px solid var(--cyan);border-radius:4px;padding:18px 20px;margin-bottom:12px;}
+.brk-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;}
+.brk-box p{font-size:14px;color:var(--muted);line-height:1.65;}
+.brk-box strong{color:var(--text);font-weight:500;}
+.dir-box{background:var(--dark-3);border:1px solid rgba(0,200,240,0.1);border-left:3px solid var(--blue);border-radius:4px;padding:18px 20px;margin-bottom:28px;}
+.dir-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.dir-box p{font-size:14px;color:var(--text);line-height:1.65;}
+.dir-box strong{color:var(--cyan);}
+/* HOT LEAD BANNER */
+.hot-banner{background:linear-gradient(135deg,rgba(255,184,0,0.12),rgba(255,107,0,0.08));border:1px solid rgba(255,184,0,0.35);border-radius:6px;padding:20px 24px;margin-bottom:24px;display:none;}
+.hot-banner.show{display:block;}
+.hot-eye{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;}
+.hot-banner h4{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--text);margin-bottom:6px;}
+.hot-banner p{font-size:13px;color:var(--muted);line-height:1.55;}
 /* OFFER */
-.offer {
-  background: var(--dark-2); border: 1px solid rgba(0,200,240,0.28);
-  border-radius: 6px; padding: 40px; text-align: center;
-  margin-top: 28px; position: relative; overflow: hidden;
-}
-.offer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #00E096, var(--cyan), var(--blue)); }
-@media(max-width:520px) { .offer { padding: 28px 18px; } }
-.offer-eye { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
-.offer-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(22px, 5vw, 38px); font-weight: 800; text-transform: uppercase; color: var(--text); line-height: 1.1; margin-bottom: 28px; }
-.offer-title em { color: var(--cyan); font-style: normal; }
-
-.kit { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; text-align: left; }
-.ki { display: flex; align-items: flex-start; gap: 12px; background: var(--dark-3); border: 1px solid rgba(0,200,240,0.08); border-radius: 4px; padding: 12px 16px; }
-.kchk { width: 20px; height: 20px; background: rgba(0,224,150,0.14); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-.kchk svg { width: 10px; height: 10px; }
-.ktxt { font-size: 14px; color: var(--text); line-height: 1.4; }
-.ktxt span { color: var(--muted); font-size: 12px; }
-
-.price-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
-.price-old { font-size: 15px; color: var(--muted); text-decoration: line-through; }
-.price-new { font-family: 'Barlow Condensed', sans-serif; font-size: 48px; font-weight: 800; color: var(--green); line-height: 1; }
-.price-tag { font-size: 12px; background: rgba(0,224,150,0.12); color: var(--green); border: 1px solid rgba(0,224,150,0.25); border-radius: 2px; padding: 4px 10px; }
-.guar { margin-top: 14px; font-size: 12px; color: var(--muted); }
-
-.ftr { text-align: center; margin-top: 40px; font-size: 11px; color: var(--muted); opacity: 0.35; letter-spacing: 1px; }
+.offer{background:var(--dark-2);border:1px solid rgba(0,200,240,0.28);border-radius:6px;padding:40px;text-align:center;margin-top:28px;position:relative;overflow:hidden;}
+.offer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#00E096,var(--cyan),var(--blue));}
+@media(max-width:520px){.offer{padding:28px 18px;}}
+.offer-eye{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
+.offer-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,38px);font-weight:800;text-transform:uppercase;color:var(--text);line-height:1.1;margin-bottom:28px;}
+.offer-title em{color:var(--cyan);font-style:normal;}
+.kit{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;text-align:left;}
+.ki{display:flex;align-items:flex-start;gap:12px;background:var(--dark-3);border:1px solid rgba(0,200,240,0.08);border-radius:4px;padding:12px 16px;}
+.kchk{width:20px;height:20px;background:rgba(0,224,150,0.14);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.kchk svg{width:10px;height:10px;}
+.ktxt{font-size:14px;color:var(--text);line-height:1.4;}
+.ktxt span{color:var(--muted);font-size:12px;}
+.price-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
+.price-old{font-size:15px;color:var(--muted);text-decoration:line-through;}
+.price-new{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:var(--green);line-height:1;}
+.price-tag{font-size:12px;background:rgba(0,224,150,0.12);color:var(--green);border:1px solid rgba(0,224,150,0.25);border-radius:2px;padding:4px 10px;}
+.guar{margin-top:14px;font-size:12px;color:var(--muted);}
+.divider{display:flex;align-items:center;gap:12px;margin:28px 0;}
+.divider hr{flex:1;border:none;border-top:1px solid rgba(0,200,240,0.1);}
+.divider span{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
+.ftr{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);opacity:0.35;letter-spacing:1px;}
 </style>
 </head>
 <body>
@@ -200,7 +122,7 @@ h1 em { color: var(--cyan); font-style: normal; }
     <h1>Qual o seu nível para investir em imóveis<br><em>que se pagam sozinhos</em> usando OPM?</h1>
     <p class="sub">Descubra em 2 minutos se você está pronto para gerar renda com imóveis — mesmo começando do zero.</p>
     <div class="badges">
-      <span class="bdg">7 perguntas</span>
+      <span class="bdg">10 perguntas</span>
       <span class="bdg">2 minutos</span>
       <span class="bdg">Resultado personalizado</span>
     </div>
@@ -234,10 +156,10 @@ h1 em { color: var(--cyan); font-style: normal; }
   </div>
   <div class="prog-wrap">
     <div class="prog-top">
-      <span class="prog-lbl" id="prog-lbl">Pergunta 1 de 7</span>
-      <span class="prog-num" id="prog-pct">14%</span>
+      <span class="prog-lbl" id="prog-lbl">Pergunta 1 de 10</span>
+      <span class="prog-num" id="prog-pct">10%</span>
     </div>
-    <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:14%"></div></div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:10%"></div></div>
   </div>
   <div class="card" id="q-card"></div>
   <div class="nav">
@@ -266,10 +188,18 @@ h1 em { color: var(--cyan); font-style: normal; }
       <div class="dir-lbl">Seu próximo passo</div>
       <p id="r-dir"></p>
     </div>
+
+    <!-- BANNER LEAD QUENTE -->
+    <div class="hot-banner" id="hot-banner">
+      <div class="hot-eye">⚡ Oportunidade exclusiva para o seu perfil</div>
+      <h4>Você tem o perfil para a mentoria RIEX</h4>
+      <p>Baseado nas suas respostas, você está no nível certo para evoluir muito mais rápido com acompanhamento direto. Agende uma conversa gratuita de 30 minutos e descubra como.</p>
+    </div>
   </div>
 
+  <!-- OFERTA KIT -->
   <div class="offer">
-    <p class="offer-eye">Solução recomendada para o seu perfil</p>
+    <p class="offer-eye">Passo 1 — Comece com a ferramenta certa</p>
     <h2 class="offer-title">Kit Investidor de Studios<br><em>que se pagam sozinhos</em></h2>
     <div class="kit">
       <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Planilha de Viabilidade</strong> <span>— Analise qualquer imóvel em minutos (R$97)</span></div></div>
@@ -285,6 +215,14 @@ h1 em { color: var(--cyan); font-style: normal; }
     </div>
     <button class="btn btn-cta" onclick="window.open('https://payfast.greenn.com.br/5zy4uz2','_blank')">Quero o Kit Agora →</button>
     <p class="guar">🔒 Pagamento 100% seguro · Acesso imediato após a compra</p>
+
+    <!-- BOTÃO CALL — só aparece para leads quentes -->
+    <div id="call-section" style="display:none;">
+      <div class="divider"><hr><span>ou</span><hr></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Você tem o perfil para ir muito além do Kit. Quer descobrir como a mentoria RIEX pode acelerar seus resultados?</p>
+      <button class="btn btn-call" onclick="window.open('https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0WFYBrfoynJ3Dx4OmuM8imc85UvLyg5tErbVszMKouajyqA1YKLjkl_P7YzSehxl93qf1YetXN','_blank')">Agendar Conversa Gratuita →</button>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px;">30 minutos · Sem compromisso · Diagnóstico personalizado</p>
+    </div>
   </div>
 
   <div style="text-align:center;margin-top:24px;">
@@ -295,14 +233,31 @@ h1 em { color: var(--cyan); font-style: normal; }
 
 </div>
 <script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFQZ9jGUHqinSOvDfw-Fpx-bFgcPn09tX-Eg0Ee0Rw5SscViDeWPIETG1AFETkjR2lXw/exec';
+
 const QS = [
-  { q:'Você já investe em imóveis?', sub:'Seja honesto — isso vai calibrar seu resultado.', opts:[{t:'Nunca investi',p:0},{t:'Já pensei, mas nunca fiz',p:1},{t:'Já investi 1 vez',p:2},{t:'Já invisto com frequência',p:3}] },
-  { q:'Hoje, qual sua realidade financeira para investir?', sub:'Não se preocupe — a resposta pode te surpreender.', opts:[{t:'Não tenho dinheiro disponível',p:0},{t:'Até R$ 10 mil',p:1},{t:'R$ 10 mil a R$ 50 mil',p:2},{t:'Acima de R$ 50 mil',p:3}] },
-  { q:'Você conhece o conceito de investir com dinheiro de outras pessoas (OPM)?', sub:"OPM = Other People's Money — a base de grandes fortunas.", opts:[{t:'Nunca ouvi falar',p:0},{t:'Já ouvi, mas não entendo',p:1},{t:'Entendo o básico',p:2},{t:'Já tentei usar',p:3}] },
-  { q:'Qual seu principal objetivo com imóveis?', sub:'Escolha o que mais faz sentido pra você agora.', opts:[{t:'Renda mensal com aluguéis',p:2},{t:'Valorização patrimonial',p:1},{t:'Sair do aluguel',p:0},{t:'Viver de renda no futuro',p:2}] },
-  { q:'O que mais te impede hoje de investir?', sub:'Seja honesto — essa resposta define tudo.', opts:[{t:'Falta de dinheiro',p:0},{t:'Medo de errar',p:1},{t:'Não sei por onde começar',p:1},{t:'Falta de oportunidades boas',p:2}] },
-  { q:'Se você tivesse um método validado, você começaria?', sub:'Resposta honesta vale mais do que resposta "certa".', opts:[{t:'Sim, com certeza',p:3},{t:'Talvez',p:2},{t:'Ainda tenho dúvidas',p:1},{t:'Não agora',p:0}] },
-  { q:'Você gostaria de aprender a analisar se um imóvel se paga sozinho em poucos minutos?', sub:'Última pergunta.', opts:[{t:'Sim',p:2},{t:'Muito',p:3},{t:'Com certeza',p:3},{t:'Isso mudaria tudo pra mim',p:3}] },
+  // Bloco 1 — Maturidade
+  { q:'Você já investe em imóveis?', sub:'Seja honesto — isso vai calibrar seu resultado.', hot:false,
+    opts:[{t:'Nunca investi',p:0,h:0},{t:'Já pensei, mas nunca fiz',p:1,h:0},{t:'Já investi 1 vez',p:2,h:1},{t:'Já invisto com frequência',p:3,h:2}] },
+  { q:'Hoje, qual sua realidade financeira para investir?', sub:'Não se preocupe — a resposta pode te surpreender.', hot:false,
+    opts:[{t:'Não tenho dinheiro disponível',p:0,h:0},{t:'Até R$ 10 mil',p:1,h:0},{t:'R$ 10 mil a R$ 50 mil',p:2,h:1},{t:'Acima de R$ 50 mil',p:3,h:2}] },
+  { q:'Você conhece o conceito de investir com dinheiro de outras pessoas (OPM)?', sub:"OPM = Other People's Money — a base de grandes fortunas.", hot:false,
+    opts:[{t:'Nunca ouvi falar',p:0,h:0},{t:'Já ouvi, mas não entendo',p:1,h:0},{t:'Entendo o básico',p:2,h:1},{t:'Já tentei usar',p:3,h:2}] },
+  { q:'Qual seu principal objetivo com imóveis?', sub:'Escolha o que mais faz sentido pra você agora.', hot:false,
+    opts:[{t:'Sair do aluguel',p:0,h:0},{t:'Valorização patrimonial',p:1,h:0},{t:'Renda mensal com aluguéis',p:2,h:1},{t:'Viver de renda no futuro',p:2,h:1}] },
+  { q:'O que mais te impede hoje de investir?', sub:'Essa resposta define o seu ponto de alavancagem.', hot:false,
+    opts:[{t:'Falta de dinheiro',p:0,h:0},{t:'Não sei por onde começar',p:1,h:0},{t:'Medo de errar',p:1,h:0},{t:'Falta de oportunidades boas',p:2,h:1}] },
+  { q:'Se você tivesse um método validado, você começaria?', sub:'Resposta honesta vale mais do que resposta "certa".', hot:false,
+    opts:[{t:'Não agora',p:0,h:0},{t:'Ainda tenho dúvidas',p:1,h:0},{t:'Talvez',p:2,h:0},{t:'Sim, com certeza',p:3,h:1}] },
+  { q:'Você gostaria de aprender a analisar se um imóvel se paga sozinho em poucos minutos?', sub:'Última pergunta do bloco principal.', hot:false,
+    opts:[{t:'Sim',p:2,h:0},{t:'Muito',p:3,h:0},{t:'Com certeza',p:3,h:1},{t:'Isso mudaria tudo pra mim',p:3,h:1}] },
+  // Bloco 2 — Qualificação alto ticket
+  { q:'Qual sua renda mensal atual?', sub:'Essa informação é confidencial e usada só para personalizar seu resultado.', hot:true,
+    opts:[{t:'Até R$ 5 mil',p:0,h:0},{t:'R$ 5 mil a R$ 10 mil',p:1,h:0},{t:'R$ 10 mil a R$ 30 mil',p:2,h:2},{t:'Acima de R$ 30 mil',p:3,h:3}] },
+  { q:'Você já investiu em mentoria ou educação de alto valor?', sub:'Quem investe em si mesmo tende a ir mais longe.', hot:true,
+    opts:[{t:'Nunca',p:0,h:0},{t:'Já considerei, mas não fiz',p:1,h:0},{t:'Sim, investi uma vez',p:2,h:1},{t:'Sim, invisto regularmente',p:3,h:2}] },
+  { q:'Qual seu maior objetivo nos próximos 12 meses?', sub:'Seja específico — isso define tudo.', hot:true,
+    opts:[{t:'Aprender mais sobre o mercado',p:1,h:0},{t:'Fazer meu primeiro investimento',p:2,h:0},{t:'Gerar renda passiva com imóveis',p:3,h:1},{t:'Construir um portfólio e escalar',p:3,h:2}] },
 ];
 
 const PROFILES = [
@@ -310,11 +265,11 @@ const PROFILES = [
     diag:'Você ainda está no começo e travado principalmente por falta de clareza e segurança. A boa notícia? A maioria dos grandes investidores começou exatamente onde você está.',
     brk:'<strong>Você não precisa de dinheiro para começar</strong> — precisa saber identificar oportunidades viáveis. Com o método certo, o capital vem do próprio mercado.',
     dir:'Seu primeiro passo não é investir… é <strong>aprender a analisar</strong>. Quem sabe analisar nunca fica sem oportunidade.' },
-  { max:11, emoji:'🟡', label:'Perfil 2', title:'Interessado Perdido',
+  { max:13, emoji:'🟡', label:'Perfil 2', title:'Interessado Perdido',
     diag:'Você já entende que imóveis são uma oportunidade real, mas ainda não tem método. Isso é perigoso — porque entusiasmo sem ferramenta vira aposta.',
     brk:'<strong>Sem análise, qualquer investimento vira aposta.</strong> O que separa quem ganha de quem perde não é o imóvel — é a capacidade de medir o retorno antes de entrar.',
     dir:'Você precisa de <strong>uma ferramenta que te dê segurança</strong> para dizer sim ou não com dados, não com feeling.' },
-  { max:16, emoji:'🔵', label:'Perfil 3', title:'Pronto pra Começar',
+  { max:20, emoji:'🔵', label:'Perfil 3', title:'Pronto pra Começar',
     diag:'Você já tem mentalidade e interesse — o que falta é execução com estratégia. Você está no ponto certo para dar o primeiro passo com consistência.',
     brk:'<strong>O erro agora não é começar… é começar errado.</strong> Um imóvel ruim pode travar sua jornada por anos. Um imóvel certo abre o caminho para o próximo.',
     dir:'Você precisa <strong>validar oportunidades antes de entrar</strong>. Uma planilha de viabilidade é o que separa o investimento certo do tiro no escuro.' },
@@ -324,78 +279,106 @@ const PROFILES = [
     dir:'Você precisa <strong>otimizar decisões e acelerar crescimento</strong> com ferramentas que entregam dados em segundos — não horas.' },
 ];
 
-let cur = 0, ans = new Array(QS.length).fill(null), lead = {};
+// Lead quente se hotScore >= 4
+const HOT_THRESHOLD = 4;
 
-function goQuiz() {
-  const nome = document.getElementById('f-nome').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  document.getElementById('e-nome').style.display = nome ? 'none':'block';
-  document.getElementById('e-email').style.display = emailOk ? 'none':'block';
-  if (!nome || !emailOk) return;
-  lead = { nome, email, tel: document.getElementById('f-tel').value.trim() };
-  cur = 0; ans = new Array(QS.length).fill(null);
+let cur=0, ans=new Array(QS.length).fill(null), lead={};
+
+function goQuiz(){
+  const nome=document.getElementById('f-nome').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  document.getElementById('e-nome').style.display=nome?'none':'block';
+  document.getElementById('e-email').style.display=emailOk?'none':'block';
+  if(!nome||!emailOk) return;
+  lead={nome,email,tel:document.getElementById('f-tel').value.trim()};
+  cur=0; ans=new Array(QS.length).fill(null);
   renderQ(0);
   document.getElementById('s-intro').classList.remove('active');
   document.getElementById('s-quiz').classList.add('active');
   window.scrollTo(0,0);
 }
 
-function renderQ(i) {
-  const q = QS[i];
-  const pct = Math.round(((i+1)/QS.length)*100);
-  document.getElementById('prog-lbl').textContent = `Pergunta ${i+1} de ${QS.length}`;
-  document.getElementById('prog-pct').textContent = pct+'%';
-  document.getElementById('prog-fill').style.width = pct+'%';
-  document.getElementById('btn-back').style.display = i===0?'none':'flex';
-  document.getElementById('btn-next').textContent = i===QS.length-1?'Ver meu resultado →':'Próxima →';
+function renderQ(i){
+  const q=QS[i];
+  const pct=Math.round(((i+1)/QS.length)*100);
+  document.getElementById('prog-lbl').textContent=`Pergunta ${i+1} de ${QS.length}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('btn-back').style.display=i===0?'none':'flex';
+  document.getElementById('btn-next').textContent=i===QS.length-1?'Ver meu resultado →':'Próxima →';
   document.getElementById('err-sel').style.display='none';
-  let h = `<span class="qlabel">Pergunta ${i+1} de ${QS.length}</span><div class="qtext">${q.q}</div><p class="qsub">${q.sub}</p><div class="opts">`;
+  // Separador visual para bloco 2
+  let extra='';
+  if(i===7) extra=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;"><hr style="flex:1;border:none;border-top:1px solid rgba(0,200,240,0.1);"><span style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;">Qualificação avançada</span><hr style="flex:1;border:none;border-top:1px solid rgba(0,200,240,0.1);"></div>`;
+  let h=`${extra}<span class="qlabel">Pergunta ${i+1} de ${QS.length}</span><div class="qtext">${q.q}</div><p class="qsub">${q.sub}</p><div class="opts">`;
   q.opts.forEach((o,oi)=>{
-    const s = ans[i]===oi?' sel':'';
+    const s=ans[i]===oi?' sel':'';
     h+=`<div class="opt${s}" onclick="pick(${i},${oi},this)"><div class="oradio"><div class="odik"></div></div><span class="otxt">${o.t}</span></div>`;
   });
   h+='</div>';
-  document.getElementById('q-card').innerHTML = h;
+  document.getElementById('q-card').innerHTML=h;
 }
 
-function pick(qi,oi,el) {
+function pick(qi,oi,el){
   ans[qi]=oi;
   document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
   el.classList.add('sel');
   document.getElementById('err-sel').style.display='none';
 }
 
-function nextQ() {
-  if (ans[cur]===null){ document.getElementById('err-sel').style.display='block'; return; }
-  if (cur<QS.length-1){ cur++; renderQ(cur); window.scrollTo(0,0); }
+function nextQ(){
+  if(ans[cur]===null){document.getElementById('err-sel').style.display='block';return;}
+  if(cur<QS.length-1){cur++;renderQ(cur);window.scrollTo(0,0);}
   else showResult();
 }
 
-function prevQ() {
-  if (cur>0){ cur--; renderQ(cur); window.scrollTo(0,0); }
+function prevQ(){
+  if(cur>0){cur--;renderQ(cur);window.scrollTo(0,0);}
 }
 
-function showResult() {
-  let total = 0;
-  ans.forEach((ai,qi)=>{ if(ai!==null) total+=QS[qi].opts[ai].p; });
-  const p = PROFILES.find(x=>total<=x.max);
-  document.getElementById('r-badge').innerHTML = `<div class="res-badge" style="background:rgba(0,200,240,0.1);border:1px solid rgba(0,200,240,0.25);color:#00C8F0;">${p.emoji} ${p.label} · ${total} pts</div>`;
-  document.getElementById('r-title').textContent = p.title;
-  document.getElementById('r-diag').textContent = p.diag;
-  document.getElementById('r-brk').innerHTML = p.brk;
-  document.getElementById('r-dir').innerHTML = p.dir;
+function showResult(){
+  let total=0, hotScore=0;
+  ans.forEach((ai,qi)=>{
+    if(ai!==null){
+      total+=QS[qi].opts[ai].p;
+      hotScore+=QS[qi].opts[ai].h;
+    }
+  });
+
+  const isHot = hotScore >= HOT_THRESHOLD;
+  const p=PROFILES.find(x=>total<=x.max);
+
+  document.getElementById('r-badge').innerHTML=`<div class="res-badge" style="background:rgba(0,200,240,0.1);border:1px solid rgba(0,200,240,0.25);color:#00C8F0;">${p.emoji} ${p.label} · ${total} pts</div>`;
+  document.getElementById('r-title').textContent=p.title;
+  document.getElementById('r-diag').textContent=p.diag;
+  document.getElementById('r-brk').innerHTML=p.brk;
+  document.getElementById('r-dir').innerHTML=p.dir;
+
+  // Mostra banner + botão de call só para leads quentes
+  if(isHot){
+    document.getElementById('hot-banner').classList.add('show');
+    document.getElementById('call-section').style.display='block';
+  }
+
   document.getElementById('s-quiz').classList.remove('active');
   document.getElementById('s-result').classList.add('active');
   window.scrollTo(0,0);
 
-  // Envia lead para Google Sheets via GET (sem CORS)
-  var params = new URLSearchParams({nome: lead.nome, email: lead.email, tel: lead.tel||'', total: String(total), perfil: p.label + ' — ' + p.title});
-  new Image().src = 'https://script.google.com/macros/s/AKfycbyFQZ9jGUHqinSOvDfw-Fpx-bFgcPn09tX-Eg0Ee0Rw5SscViDeWPIETG1AFETkjR2lXw/exec?' + params.toString();
+  // Envia para Google Sheets
+  var params=new URLSearchParams({
+    nome:lead.nome, email:lead.email, tel:lead.tel||'',
+    total:String(total), perfil:p.label+' — '+p.title,
+    lead_quente:isHot?'SIM':'NÃO', hot_score:String(hotScore)
+  });
+  new Image().src=SCRIPT_URL+'?'+params.toString();
 }
 
-function resetQuiz() {
+function resetQuiz(){
   ['f-nome','f-email','f-tel'].forEach(id=>document.getElementById(id).value='');
+  ans=new Array(QS.length).fill(null); cur=0;
+  document.getElementById('hot-banner').classList.remove('show');
+  document.getElementById('call-section').style.display='none';
   document.getElementById('s-result').classList.remove('active');
   document.getElementById('s-intro').classList.add('active');
   window.scrollTo(0,0);
