@@ -111,6 +111,18 @@ h1 em{color:var(--cyan);font-style:normal;}
 .divider span{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;}
 .ftr{text-align:center;margin-top:40px;font-size:11px;color:var(--muted);opacity:0.35;letter-spacing:1px;}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '754597156226662');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=754597156226662&ev=PageView&noscript=1"/></noscript>
+<!-- Fim Meta Pixel -->
 </head>
 <body>
 <div class="wrap">
@@ -199,16 +211,16 @@ h1 em{color:var(--cyan);font-style:normal;}
     <div class="kit">
       <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Planilha de Viabilidade</strong> <span>— Analise qualquer imóvel em minutos (R$97)</span></div></div>
       <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Aula completa</strong> <span>— Como usar a planilha passo a passo</span></div></div>
-      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Aula bônus</strong> <span>— Como identificar um imóvel que se paga sozinho</span></div></div>
-      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>1 Estudo de caso real</strong> <span>— Veja como funciona na prática</span></div></div>
-      <div class="ki"><div class="kchk"><svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="#00E096" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ktxt"><strong>Checklist de análise rápida</strong> <span>— Valide oportunidades antes de entrar</span></div></div>
+      
+      
+      
     </div>
     <div class="price-row">
       <span class="price-old">De R$ 297</span>
       <span class="price-new">R$ 97</span>
       <span class="price-tag">67% OFF</span>
     </div>
-    <button class="btn btn-cta" onclick="window.open('https://payfast.greenn.com.br/5zy4uz2','_blank')">Quero o Kit Agora →</button>
+    <button class="btn btn-cta" onclick="fbq('track','Purchase',{value:97,currency:'BRL'}); window.open('https://payfast.greenn.com.br/5zy4uz2','_blank')">Quero o Kit Agora →</button>
     <p class="guar">🔒 Pagamento 100% seguro · Acesso imediato após a compra</p>
 
 
@@ -285,6 +297,7 @@ function goQuiz(){
   renderQ(0);
   document.getElementById('s-intro').classList.remove('active');
   document.getElementById('s-quiz').classList.add('active');
+  fbq('track', 'Lead');
   window.scrollTo(0,0);
 }
 
