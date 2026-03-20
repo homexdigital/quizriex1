@@ -254,10 +254,10 @@ const QS = [
   // Bloco 2 — Qualificação alto ticket
   { q:'Qual sua renda mensal atual?', sub:'Essa informação é confidencial e usada só para personalizar seu resultado.', hot:true,
     opts:[{t:'Até R$ 5 mil',p:0,h:0},{t:'R$ 5 mil a R$ 10 mil',p:1,h:0},{t:'R$ 10 mil a R$ 30 mil',p:2,h:2},{t:'Acima de R$ 30 mil',p:3,h:3}] },
-  { q:'Você já investiu em mentoria ou educação de alto valor?', sub:'Quem investe em si mesmo tende a ir mais longe.', hot:true,
-    opts:[{t:'Nunca',p:0,h:0},{t:'Já considerei, mas não fiz',p:1,h:0},{t:'Sim, investi uma vez',p:2,h:1},{t:'Sim, invisto regularmente',p:3,h:2}] },
-  { q:'Qual seu maior objetivo nos próximos 12 meses?', sub:'Seja específico — isso define tudo.', hot:true,
-    opts:[{t:'Aprender mais sobre o mercado',p:1,h:0},{t:'Fazer meu primeiro investimento',p:2,h:0},{t:'Gerar renda passiva com imóveis',p:3,h:1},{t:'Construir um portfólio e escalar',p:3,h:2}] },
+  { q:'Qual sua faixa de idade?', sub:'Isso nos ajuda a personalizar seu diagnóstico.', hot:true,
+    opts:[{t:'Até 25 anos',p:1,h:0},{t:'26 a 35 anos',p:2,h:1},{t:'36 a 50 anos',p:2,h:2},{t:'Acima de 50 anos',p:2,h:1}] },
+  { q:'Qual sua área de atuação profissional?', sub:'Última pergunta — promessa.', hot:true,
+    opts:[{t:'Funcionário CLT',p:1,h:0},{t:'Profissional liberal (médico, advogado, engenheiro...)',p:2,h:2},{t:'Empresário / empreendedor',p:3,h:3},{t:'Autônomo / freelancer',p:2,h:1}] },
 ];
 
 const PROFILES = [
@@ -370,6 +370,21 @@ function showResult(){
     nome:lead.nome, email:lead.email, tel:lead.tel||'',
     total:String(total), perfil:p.label+' — '+p.title,
     lead_quente:isHot?'SIM':'NÃO', hot_score:String(hotScore)
+  });
+  // Envia para Google Sheets
+  // Captura respostas das perguntas de qualificação
+  var rendaOpts = ['Até R$ 5 mil','R$ 5 mil a R$ 10 mil','R$ 10 mil a R$ 30 mil','Acima de R$ 30 mil'];
+  var idadeOpts = ['Até 25 anos','26 a 35 anos','36 a 50 anos','Acima de 50 anos'];
+  var areaOpts  = ['Funcionário CLT','Profissional liberal','Empresário / empreendedor','Autônomo / freelancer'];
+  var renda = ans[7]!==null ? rendaOpts[ans[7]] : '';
+  var idade = ans[8]!==null ? idadeOpts[ans[8]] : '';
+  var area  = ans[9]!==null ? areaOpts[ans[9]]  : '';
+
+  var params=new URLSearchParams({
+    nome:lead.nome, email:lead.email, tel:lead.tel||'',
+    total:String(total), perfil:p.label+' — '+p.title,
+    lead_quente:isHot?'SIM':'NÃO', hot_score:String(hotScore),
+    renda:renda, idade:idade, area:area
   });
   new Image().src=SCRIPT_URL+'?'+params.toString();
 }
