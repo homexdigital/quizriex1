@@ -189,12 +189,7 @@ h1 em{color:var(--cyan);font-style:normal;}
       <p id="r-dir"></p>
     </div>
 
-    <!-- BANNER LEAD QUENTE -->
-    <div class="hot-banner" id="hot-banner">
-      <div class="hot-eye">⚡ Oportunidade exclusiva para o seu perfil</div>
-      <h4>Você tem o perfil para a mentoria RIEX</h4>
-      <p>Baseado nas suas respostas, você está no nível certo para evoluir muito mais rápido com acompanhamento direto. Agende uma conversa gratuita de 30 minutos e descubra como.</p>
-    </div>
+
   </div>
 
   <!-- OFERTA KIT -->
@@ -216,13 +211,7 @@ h1 em{color:var(--cyan);font-style:normal;}
     <button class="btn btn-cta" onclick="window.open('https://payfast.greenn.com.br/5zy4uz2','_blank')">Quero o Kit Agora →</button>
     <p class="guar">🔒 Pagamento 100% seguro · Acesso imediato após a compra</p>
 
-    <!-- BOTÃO CALL — só aparece para leads quentes -->
-    <div id="call-section" style="display:none;">
-      <div class="divider"><hr><span>ou</span><hr></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Você tem o perfil para ir muito além do Kit. Quer descobrir como a mentoria RIEX pode acelerar seus resultados?</p>
-      <button class="btn btn-call" onclick="window.open('https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0WFYBrfoynJ3Dx4OmuM8imc85UvLyg5tErbVszMKouajyqA1YKLjkl_P7YzSehxl93qf1YetXN','_blank')">Agendar Conversa Gratuita →</button>
-      <p style="font-size:11px;color:var(--muted);margin-top:10px;">30 minutos · Sem compromisso · Diagnóstico personalizado</p>
-    </div>
+
   </div>
 
   <div style="text-align:center;margin-top:24px;">
@@ -355,11 +344,7 @@ function showResult(){
   document.getElementById('r-brk').innerHTML=p.brk;
   document.getElementById('r-dir').innerHTML=p.dir;
 
-  // Mostra banner + botão de call só para leads quentes
-  if(isHot){
-    document.getElementById('hot-banner').classList.add('show');
-    document.getElementById('call-section').style.display='block';
-  }
+
 
   document.getElementById('s-quiz').classList.remove('active');
   document.getElementById('s-result').classList.add('active');
@@ -392,8 +377,7 @@ function showResult(){
 function resetQuiz(){
   ['f-nome','f-email','f-tel'].forEach(id=>document.getElementById(id).value='');
   ans=new Array(QS.length).fill(null); cur=0;
-  document.getElementById('hot-banner').classList.remove('show');
-  document.getElementById('call-section').style.display='none';
+
   document.getElementById('s-result').classList.remove('active');
   document.getElementById('s-intro').classList.add('active');
   window.scrollTo(0,0);
