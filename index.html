@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz RIEX — Qual seu nível para investir em imóveis?</title>
+<title>Quiz RIEX — Descubra seu perfil de investidor imobiliário</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -27,7 +27,31 @@ h1 em{color:var(--cyan);font-style:normal;}
 /* CARD */
 .card{background:var(--dark-2);border:1px solid var(--cyan-border);border-radius:6px;padding:40px;margin-bottom:20px;position:relative;overflow:hidden;}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan) 0%,var(--blue) 100%);}
-@media(max-width:520px){.card{padding:24px 18px;}}
+@media(max-width:600px){
+  body{padding:16px 12px 60px;}
+  .card{padding:20px 16px;}
+  .offer{padding:24px 16px;}
+  h1{font-size:26px;line-height:1.1;}
+  .sub{font-size:14px;}
+  .tag{font-size:10px;letter-spacing:2px;padding:5px 12px;margin-bottom:20px;}
+  .badges{gap:6px;}
+  .bdg{font-size:11px;padding:4px 10px;}
+  .btn{font-size:16px;padding:15px 20px;}
+  .btn-cta{font-size:17px;padding:17px 20px;}
+  .qtext{font-size:18px;}
+  .opt{padding:12px 14px;gap:10px;}
+  .otxt{font-size:14px;}
+  .ptitle{font-size:28px;}
+  .pdiag{font-size:14px;}
+  .brk-box p,.dir-box p{font-size:13px;}
+  .price-new{font-size:38px;}
+  .ktxt{font-size:13px;}
+  .ki{padding:10px 12px;}
+  .prog-lbl{font-size:11px;}
+  .nav{flex-direction:column-reverse;gap:8px;}
+  .finput{font-size:16px;}
+  .offer-title{font-size:22px;}
+}
 /* FORM */
 .frow{margin-bottom:18px;}
 .flabel{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
@@ -91,7 +115,7 @@ h1 em{color:var(--cyan);font-style:normal;}
 /* OFFER */
 .offer{background:var(--dark-2);border:1px solid rgba(0,200,240,0.28);border-radius:6px;padding:40px;text-align:center;margin-top:28px;position:relative;overflow:hidden;}
 .offer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#00E096,var(--cyan),var(--blue));}
-@media(max-width:520px){.offer{padding:28px 18px;}}
+
 .offer-eye{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:14px;}
 .offer-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,5vw,38px);font-weight:800;text-transform:uppercase;color:var(--text);line-height:1.1;margin-bottom:28px;}
 .offer-title em{color:var(--cyan);font-style:normal;}
@@ -131,8 +155,8 @@ fbq('track', 'PageView');
 <div class="screen active" id="s-intro">
   <div class="hdr">
     <div class="tag"><span class="dot"></span>RIEX BRAZIL<span class="dot"></span></div>
-    <h1>Qual o seu nível para investir em imóveis<br><em>que se pagam sozinhos</em> usando OPM?</h1>
-    <p class="sub">Descubra em 2 minutos se você está pronto para gerar renda com imóveis — mesmo começando do zero.</p>
+    <h1>Descubra se você tem perfil para<br><em>investir em imóveis</em> com pouco capital</h1>
+    <p class="sub">Responda 10 perguntas e descubra seu nível como investidor imobiliário — mesmo que você ainda não tenha começado.</p>
     <div class="badges">
       <span class="bdg">10 perguntas</span>
       <span class="bdg">2 minutos</span>
