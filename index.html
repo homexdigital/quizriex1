@@ -387,26 +387,23 @@ function showResult(){
   document.getElementById('s-result').classList.add('active');
   window.scrollTo(0,0);
 
-  // Envia para Google Sheets
-  var params=new URLSearchParams({
-    nome:lead.nome, email:lead.email, tel:lead.tel||'',
-    total:String(total), perfil:p.label+' — '+p.title,
-    lead_quente:isHot?'SIM':'NÃO', hot_score:String(hotScore)
-  });
-  // Envia para Google Sheets
-  // Captura respostas das perguntas de qualificação
+  // Captura todas as respostas individuais
+  var getResp = function(qi){ return ans[qi]!==null ? QS[qi].opts[ans[qi]].t : ''; };
   var rendaOpts = ['Até R$ 5 mil','R$ 5 mil a R$ 10 mil','R$ 10 mil a R$ 30 mil','Acima de R$ 30 mil'];
   var idadeOpts = ['Até 25 anos','26 a 35 anos','36 a 50 anos','Acima de 50 anos'];
-  var areaOpts  = ['Funcionário CLT','Profissional liberal','Empresário / empreendedor','Autônomo / freelancer'];
+  var areaOpts  = ['Funcionário CLT','Profissional liberal (médico, advogado, engenheiro...)','Empresário / empreendedor','Autônomo / freelancer'];
   var renda = ans[7]!==null ? rendaOpts[ans[7]] : '';
   var idade = ans[8]!==null ? idadeOpts[ans[8]] : '';
   var area  = ans[9]!==null ? areaOpts[ans[9]]  : '';
 
-  var params=new URLSearchParams({
+  var params = new URLSearchParams({
     nome:lead.nome, email:lead.email, tel:lead.tel||'',
     total:String(total), perfil:p.label+' — '+p.title,
     lead_quente:isHot?'SIM':'NÃO', hot_score:String(hotScore),
-    renda:renda, idade:idade, area:area
+    renda:renda, idade:idade, area:area,
+    p1:getResp(0), p2:getResp(1), p3:getResp(2), p4:getResp(3),
+    p5:getResp(4), p6:getResp(5), p7:getResp(6),
+    p8:renda, p9:idade, p10:area
   });
   new Image().src=SCRIPT_URL+'?'+params.toString();
 }
